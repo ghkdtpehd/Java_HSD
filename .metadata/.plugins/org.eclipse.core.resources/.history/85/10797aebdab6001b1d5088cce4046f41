@@ -1,0 +1,13 @@
+public class Ex05_07_¸Þ¼­µå {
+	public static void main(String[] args) {
+		Calculator cal = new Calculator();
+		
+		int[] arr = {10,20,30};
+		
+		for(int a : arr) {
+			System.out.println(a);
+		}
+		
+		cal.sub(5,6);
+	}
+}

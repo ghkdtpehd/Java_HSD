@@ -1,0 +1,12 @@
+class Person{
+	int age;
+	void addAge(int i) {
+		Person p =new Person();
+		p.age+=i;
+	}
+}
+public class Ex05_01_Å¬·¡½º {
+	public static void main(String[] args) {
+		
+	}
+}

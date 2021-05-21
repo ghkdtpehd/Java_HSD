@@ -1,0 +1,8 @@
+public class Ex05_08_¿Á±Õ»£√‚ {
+	public static void main(String[] args) {
+		show();
+	}
+	static void show() {
+		
+	}
+}

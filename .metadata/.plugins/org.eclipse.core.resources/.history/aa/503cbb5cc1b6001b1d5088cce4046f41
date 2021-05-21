@@ -1,0 +1,22 @@
+class Calculator {
+	int a;
+	static int b;
+
+	static int sum(int x, int y) {
+		return x + y;
+	}
+	static int sub(int x, int y) {
+		return x - y;
+	}
+}
+
+public class Ex05_04_¸Þ¼­µå {
+	public static void main(String[] args) {
+		Calculator cal = new Calculator();
+
+		cal.a = 0;
+		Calculator.b = 1;
+		System.out.println(Calculator.sum(3, 6));
+		System.out.println(Calculator.sub(6, 9));
+	}
+}
