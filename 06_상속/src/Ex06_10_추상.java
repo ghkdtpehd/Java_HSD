@@ -18,7 +18,7 @@ class Circle extends Shape{
 }
 class Rectangle extends Shape{
 	Rectangle(){
-		System.out.println("Rectangle 생성자");
+//		System.out.println("Rectangle 생성자");
 	}
 	void draw() {
 		System.out.println("네모 그림");
@@ -37,5 +37,12 @@ public class Ex06_10_추상 {
 		r.draw();
 		r.delete();
 		
+		System.out.println();
+		
+		Shape[] s = {new Circle(),new Rectangle()};
+		for(int i=0;i<s.length;i++) {
+			s[i].draw();
+			s[i].delete();
+		}
 	}
 }

@@ -8,8 +8,6 @@ class Sports{
 	}
 }
 class Baseball extends Sports{
-//	String name;
-//	int inwon;
 	double ta;
 	Baseball(String name,int inwon,double ta){
 		this.name = name;
@@ -18,22 +16,18 @@ class Baseball extends Sports{
 	}
 	
 	void display() {
-//		System.out.println("이름 :"+name);
-//		System.out.println("인원 :"+inwon);
 		super.display();
 		System.out.println("타율 :"+ta);
 	}
 }
 
 class Football extends Sports{
-//	String name;
-//	int inwon;
 	int goal;
 	
 	Football(String name,int inwon,int goal){
-//		this.name = name;
-//		this.inwon = inwon;
 		super.display();
+		this.name = name;
+		this.inwon = inwon;
 		this.goal = goal;
 	}
 	
@@ -54,5 +48,13 @@ public class Ex06_01_상속 {
 		
 		Football fb = new Football("축구",11,4);
 		fb.display();
+		
+		Sports[] sp = {new Baseball("야구",9,0.234),new Football("축구",11,4)};
+		
+		System.out.println();
+		
+		for (int i=0;i<sp.length;i++) {
+			sp[i].display();
+		}
 	}
 }
