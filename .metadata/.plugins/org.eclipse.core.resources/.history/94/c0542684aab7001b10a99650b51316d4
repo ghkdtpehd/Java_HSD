@@ -1,0 +1,26 @@
+class Sports{
+	String name;
+	int inwon;
+}
+class Baseball extends Sports{
+//	String name;
+//	int inwon;
+	double ta;
+	Baseball(String name,int inwon,double ta){
+		this.name = name;
+		this.inwon = inwon;
+		this.ta = ta;
+	}
+}
+
+class Football extends Sports{
+//	String name;
+//	int inwon;
+	int goal;
+}
+public class Ex06_01_상속 {
+	public static void main(String[] args) {
+		Baseball bb = new Baseball("야구",9,0.234);
+		System.out.println(bb.name+" "+bb.inwon);
+	}
+}

@@ -1,0 +1,10 @@
+class Person2{
+	String name;
+	int age;
+	double height;
+}
+public class Ex05_13_setter_getter {
+	public static void main(String[] args) {
+		Person2 p = new Person2();
+	}
+}

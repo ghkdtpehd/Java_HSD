@@ -1,0 +1,17 @@
+2021-05-12 01:09:10,919 [Worker-3: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is not available. Remote download required.
+2021-05-12 08:39:34,397 [Worker-3: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is up-to-date. Trying to read.
+2021-05-12 09:21:44,447 [Worker-37: Cloning from https://github.com/ghkdtpehd/stdList.git] WARN  org.eclipse.jgit.lib.Repository - close() called when useCnt is already zero for Repository[D:\Java_hsd\stdList\.git]
+2021-05-12 10:05:34,229 [Worker-46: Cloning from https://github.com/ghkdtpehd/Java_hsd.git] WARN  org.eclipse.jgit.lib.Repository - close() called when useCnt is already zero for Repository[D:\stdList\.git]
+2021-05-12 10:28:29,937 [Worker-58: Checking out Maven projects] ERROR o.e.m2e.scm.MavenCheckoutOperation - SCM provider is not available for scm:null:https://github.com/ghkdtpehd/Java_hsd.git
+2021-05-12 10:28:29,941 [Worker-58: Checking out Maven projects] INFO  o.e.m.s.i.w.MavenProjectCheckoutJob - No Maven projects to import
+2021-05-12 10:28:29,956 [Worker-52: Importing Maven projects] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Imported and configured 0 project(s) in 0 sec
+2021-05-12 10:28:57,824 [Worker-58: Checking out Maven projects] ERROR o.e.m2e.scm.MavenCheckoutOperation - SCM provider is not available for scm:null:https://github.com/ghkdtpehd/Java_hsd.git
+2021-05-12 10:28:57,825 [Worker-58: Checking out Maven projects] INFO  o.e.m.s.i.w.MavenProjectCheckoutJob - No Maven projects to import
+2021-05-12 10:28:57,827 [Worker-52: Importing Maven projects] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Imported and configured 0 project(s) in 0 sec
+2021-05-12 10:36:50,250 [Worker-62: Checking out Maven projects] ERROR o.e.m2e.scm.MavenCheckoutOperation - SCM provider is not available for scm:null:https://github.com/ghkdtpehd/Java_hsd.git
+2021-05-12 10:36:50,251 [Worker-62: Checking out Maven projects] INFO  o.e.m.s.i.w.MavenProjectCheckoutJob - No Maven projects to import
+2021-05-12 10:36:50,255 [Worker-52: Importing Maven projects] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Imported and configured 0 project(s) in 0 sec
+2021-05-14 08:33:02,394 [Worker-3: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is out-of-date. Trying to update.
+2021-05-18 08:38:39,079 [Worker-4: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is out-of-date. Trying to update.
+2021-05-18 14:08:40,131 [Worker-2: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is up-to-date. Trying to read.
+2021-05-20 08:48:17,577 [Worker-3: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is out-of-date. Trying to update.

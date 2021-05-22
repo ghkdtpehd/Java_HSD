@@ -1,0 +1,26 @@
+class Stu{
+	private String name;
+	private int kor,eng;
+	
+	Stu(){
+		this.name = "";
+	}
+	Stu(String s){
+		
+	}
+	Stu(String s, int i){
+		this.eng=60;
+	}
+	void display() {
+		System.out.println(name+","+kor+","+eng);
+	}
+}
+
+public class Ex05_16_객체배열 {
+	public static void main(String[] args) {
+		Stu s1 = new Stu();
+		Stu s2 = new Stu("서현");
+		Stu s3 = new Stu("수영",33);
+		s3.display();
+	}
+}

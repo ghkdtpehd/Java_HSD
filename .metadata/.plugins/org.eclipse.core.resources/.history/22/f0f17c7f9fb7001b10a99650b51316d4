@@ -1,0 +1,31 @@
+class Person{
+	String name;
+	int age;
+	double height;
+	
+	Person(String s, int i){
+		name=s;
+		age = i;
+	}
+}
+class Part{
+	String step;
+	int set;
+	double height;
+}
+
+public class Ex05_01_클래스 {
+	public static void main(String[] args) {
+		Person per = new Person();
+		per.name= "아이유";
+		per.age=26;
+		per.height=158.9;
+		
+		Part p = new Part();
+		p.step = "arms";
+		p.set = 5;
+		p.height=23.5;
+		
+		Person per2 = new Person("두표",30);
+	}
+}

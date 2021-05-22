@@ -1,0 +1,17 @@
+class Furit{
+	String name;
+	int price;
+	double weight;	
+}
+public class Ex05_02_Å¬·¡½º {
+	public static void main(String[] args) {
+		Furit furit = new Furit();
+		furit.name="banana";
+		furit.price=7000;
+		furit.weight=400;
+		
+		System.out.println(furit.name);
+		System.out.println(furit.price);
+		System.out.println(furit.weight);
+	}
+}

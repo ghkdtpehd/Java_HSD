@@ -1,0 +1,16 @@
+class Baseball{
+	String name;
+	int inwon;
+	double ta;
+}
+
+class Football{
+	String name;
+	int inwon;
+	int goal;
+}
+public class Ex06_01_»ó¼Ó {
+	public static void main(String[] args) {
+		
+	}
+}

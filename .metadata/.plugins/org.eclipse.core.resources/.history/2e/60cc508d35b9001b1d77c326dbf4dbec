@@ -1,0 +1,21 @@
+class MyFather{
+	public String n;
+	private String nick;
+	public MyFather() {
+		n="æ∆§ø§≥";
+		nick = "¥Î¿Â";
+	}
+	public String getNickName() {
+		return nick;
+	}
+}
+public class Myson extends MyFather{
+	public void sayFatherName() {
+		System.out.println(name);
+		System.out.println(getNickName);
+	}
+	public static void main(String[] args) {
+		Myson m = new Myson();
+		m.sayFatherName();
+	}
+}

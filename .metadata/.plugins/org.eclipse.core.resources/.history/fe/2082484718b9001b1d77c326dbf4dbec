@@ -1,0 +1,12 @@
+class Person2{
+	private String name;
+	private int age;
+}
+class Student2{
+	int kor;
+}
+public class Ex06_04_Æ÷ÇÔ {
+	public static void main() {
+		
+	}
+}

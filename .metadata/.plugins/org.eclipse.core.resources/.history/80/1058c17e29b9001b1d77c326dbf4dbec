@@ -1,0 +1,10 @@
+package com.javastudy;
+
+public class Car {
+	private int speed;
+	private int direction;
+	Car(int speed, int direction){
+		this.speed = speed;
+		this.direction = direction;
+	}
+}

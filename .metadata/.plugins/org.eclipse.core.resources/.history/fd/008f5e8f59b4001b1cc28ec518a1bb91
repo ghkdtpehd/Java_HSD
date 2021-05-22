@@ -1,0 +1,8 @@
+public class Ex04_02_1Â÷¿ø {
+	public static void main(String[] args) {
+		double[] a = {1.1,2.2,3.3};
+		float[] b = {1.1f,2.2f,3.3f};
+		
+	}
+
+}
