@@ -1,0 +1,15 @@
+class Calculator{
+	int a;
+	static int sum(int x,int y){
+		return x+y;
+	}
+}
+
+public class Ex05_04_¸Þ¼­µå {
+	public static void main(String[] args) {
+		Calculator cal = new Calculator();
+		
+		cal.a=0;
+		System.out.println(cal.sum(3, 6));
+	}
+}

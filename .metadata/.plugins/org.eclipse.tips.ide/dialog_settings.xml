@@ -1,3 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
+<<<<<<< HEAD
+=======
+	<item key="DIALOG_X_ORIGIN" value="530"/>
+	<item key="DIALOG_Y_ORIGIN" value="113"/>
+	<item key="DIALOG_WIDTH" value="706"/>
+	<item key="DIALOG_HEIGHT" value="551"/>
+	<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>
+>>>>>>> a9cea4d9cd0380e31ffa7152220a7909a8157088
 </section>

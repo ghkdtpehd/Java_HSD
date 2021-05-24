@@ -1,0 +1,31 @@
+import java.util.Scanner;
+
+class Student{
+	String name;
+	int kor,eng,math;
+	
+	//합계 메서드
+	//평균 메서드
+	int total(int k,int e, int m) {
+		return k+e+m;
+	}
+	int avg(int k,int e, int m) {
+		return (k+e+m)/3;
+	}
+}
+
+public class Ex05_05_황세동 {
+	public static void main(String[] args) {
+		//이름 국 영 수 입력
+		Scanner sc = new Scanner(System.in);
+		Student std = new Student();
+		
+		std.name = sc.next();
+		std.kor = sc.nextInt();
+		std.eng = sc.nextInt();
+		std.math = sc.nextInt();
+		
+		System.out.println("합계: "+);
+		System.out.println("평균: "+);
+	}
+}
