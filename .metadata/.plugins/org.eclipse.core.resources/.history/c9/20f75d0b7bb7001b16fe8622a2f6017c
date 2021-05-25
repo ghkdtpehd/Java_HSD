@@ -1,9 +1,0 @@
-public class Ex05_12_overloading {
-	public static void main(String[] args) {
-		plus();
-	}
-
-	static void plus() {
-		
-	}
-}

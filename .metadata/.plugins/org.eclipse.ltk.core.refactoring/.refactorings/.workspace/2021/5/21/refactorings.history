@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<<<<<<< HEAD
-<refactoring comment="Delete resource &apos;05_클레스&apos;" deleteContents="true" description="Delete resource &apos;05_클레스&apos;" element1="/05_클레스" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1621294792752"/>
-=======
-<refactoring comment="Delete resource &apos;04_임시&apos;" deleteContents="false" description="Delete resource &apos;04_임시&apos;" element1="/04_임시" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1621555226028"/>
->>>>>>> a9cea4d9cd0380e31ffa7152220a7909a8157088
-</session>

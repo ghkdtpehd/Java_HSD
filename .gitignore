@@ -2,5 +2,4 @@
 *.log
 *.iml
 temp/
-.metadata/*
-/.metadata/
+.metadata

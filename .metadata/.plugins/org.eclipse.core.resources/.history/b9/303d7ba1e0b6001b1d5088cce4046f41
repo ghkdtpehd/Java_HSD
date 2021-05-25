@@ -1,9 +1,0 @@
-public class Ex05_09_¿Á±Õ»£√‚ {
-	public static void main(String[] args) {
-		factorial();
-	}
-
-	static void factorial() {
-		
-	}
-}

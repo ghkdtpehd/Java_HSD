@@ -1,6 +1,0 @@
-public class Ex05_07_¸Þ¼­µå {
-	public static void main(String[] args) {
-		Calculator cal = new Calculator();
-		cal.sub(5,6);
-	}
-}
