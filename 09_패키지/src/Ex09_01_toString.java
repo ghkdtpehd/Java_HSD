@@ -22,7 +22,13 @@ class Student{
 	}
 	
 	public boolean equals(Object obj) {
-		return this == obj;
+		Student s = (Student) obj;
+		
+		if(obj instanceof Student) {
+			return this.hakbun == s.hakbun && this.name.equals(s.name);
+		}else {
+			return this == obj;
+		}
 	}
 }
 
