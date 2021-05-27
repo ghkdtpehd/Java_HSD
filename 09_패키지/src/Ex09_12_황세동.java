@@ -46,11 +46,18 @@ public class Ex09_12_황세동 {
 			System.out.print("숫자 "+(i+1)+":");
 			int temp = sc.nextInt();
 			
+			//숫자 범위 제한
+			if(temp<1||temp>45) {
+				System.out.println("1~45 의숫자를 입력해주세요");
+				i--;
+				continue;
+			}
+			
 			for(int j=0;j<i;j++) {
 				//처음부터 입력된 숫자와 중복되는지 체크
 				do {
 					if(my[j] == temp) {
-						System.out.print("중복된 숫자를 입력하셨습니다. "+temp);
+						System.out.println("중복된 숫자를 입력하셨습니다. "+(j+1));
 						temp = sc.nextInt();
 						j=0;
 					}else {
