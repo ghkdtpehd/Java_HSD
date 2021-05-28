@@ -89,14 +89,11 @@ public class Ex10_08_황세동 {
 						System.out.printf(arr.get(i).getName()+"\t"+arr.get(i).getTel()+"\n");
 					}
 					break;
-			}
-			
-			if(num == 5) {
-				System.out.println("프로그램을 종료합니다.");
-				break;
-			}else if(num>0&&num<6) {
-			}else {
-				System.out.println("잘못입력하셨습니다.");
+				case 5:
+					System.out.println("프로그램을 종료합니다.");
+					System.exit(0);
+				default :
+					System.out.println("잘못입력하셨습니다.");
 			}
 		}
 	}
