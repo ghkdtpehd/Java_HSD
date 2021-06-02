@@ -13,7 +13,8 @@ public class Ex12_13_황세동 {
 		BufferedReader br = new BufferedReader(new FileReader("lyrics.txt"));
 		HashMap<String,Integer> words = new HashMap<String,Integer>();
 		String line ="";
-		int count = 0;
+		int lineCount = 0;
+		int wordCount = 0;
 		
 		//한줄 처리
 		while((line = br.readLine())!=null) {
@@ -28,12 +29,13 @@ public class Ex12_13_황세동 {
 				}else {
 					words.put(wordPart,1);
 				}
+				wordCount++;
 			}
 			//줄수 증가
-			count++;
+			lineCount++;
 		}
 		
-		System.out.println("lineCount : "+ count);
+		System.out.println("lineCount : "+ lineCount);
 		System.out.println();
 		
 		Iterator<String> it = words.keySet().iterator();
@@ -41,5 +43,7 @@ public class Ex12_13_황세동 {
 			String part = it.next();
 			System.out.println(part+" : "+words.get(part));
 		}
+		System.out.println("전채 단어 개수 : "+wordCount);
+		System.out.println("단어 개수 : "+words.size());
 	}
 }
