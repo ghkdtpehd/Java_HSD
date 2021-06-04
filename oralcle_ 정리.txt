@@ -1,0 +1,26 @@
+SQL Plus로 실행 > cmd로 실행됨
+
+[마스터 사용자]
+id : sys
+pw : oracle as sysdba
+
+[사용자]
+id : jspid
+pw : jsppw
+
+[실행이 안될시]
+제어판 - 서비스 - 오라클 서비스 중지
+
+<계정 생성>
+create user (아이디) identified by (비번) account unlock;
+<계정 삭제>
+drop user (아이디) cascade;
+
+[명령어]
+conn;	 					사용자 변환
+show user;					접속 사용자 확인
+alter session set "_oracle_script"=true;			매번 ID 앞에 'C##'을 붙이지 않도록 설정
+
+grant ~~~					권한부여
+ㄴ	connect, resource to (아이디);		ㄴ연결 권한
+ㄴ	create table, create sequence to (아이디)	ㄴ테이블 및 시퀀스 생성 권한
