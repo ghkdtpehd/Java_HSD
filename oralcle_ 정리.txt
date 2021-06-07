@@ -24,3 +24,62 @@ alter session set "_oracle_script"=true;			매번 ID 앞에 'C##'을 붙이지 �
 grant ~~~					권한부여
 ㄴ	connect, resource to (아이디);		ㄴ연결 권한
 ㄴ	create table, create sequence to (아이디)	ㄴ테이블 및 시퀀스 생성 권한
+
+alter user (아이디) default tablespace users quota unlimited on users; 열삽입 권한
+
+commit						작업 저장
+rollback						최근 commit으로 돌아가기
+
+col (col이름) for (값);			 	col의 칸수 지정
+ㄴ영문 a(칸수)
+ㄴ숫자 999	9하나당 숫자 1칸
+
+desc (테이블명) 					테이블 보기
+drop table (테이블명)				테이블 삭제
+
+where like (조건)					패턴에 따른 조건
+ㄴ 'OO_'		OO 뒤에 한글자가 있는 것
+ㄴ 'OO%'		OO로 시작하는 것
+
+select (컬럼) from (테이블명) order by (컬럼) (정렬)
+ㄴ asc 오름차순	기본값
+ㄴ desc 내림차순
+ㄴ (컬럼1) asc , (컬럼2) asc  >> 한번더 기입할 경우 이후 정렬순위를 추가지정 가능하다.
+
+[기본 테이블 생성]
+create table Members(
+id number primary key, -- no null + unique
+name varchar2(10) not null, -- 영어1 , 한글3
+salary number(15,2) default 1000000,
+birth date default sysdate,
+email varchar2(30)
+);
+
+[데이터 삽입]
+insert into (테이블명)(컬럼1,컬럼2....) value(값1,값2....);
+
+[조회 형식]
+select (col1, col2....) from (테이블명) where (조건);
+
+[수정 형식]
+update (테이블명) set (컬럼) where (조건)
+
+[삭제 형식]
+delete from (테이블명) where (조건)
+
+[colum명 수정]
+alter table (테이블명) rename column (전칼럼) to (신규칼럼);
+
+[칼럼 추가]
+alter table (테이블명) add (칼럼타입)
+
+[col 삭제]
+alter table (테이블명) drop column (칼럼명)
+
+alter table members add(gender varchar(10) default '남자' check (gender in('남자','여자')))
+
+[타입 수정]
+alter table [테이블명] modify ((칼럼) (변수))
+
+[테이블 이름변경]
+rename (구테이블) to (신규테이블);
