@@ -1,0 +1,25 @@
+col id for 9999
+col name for a7
+col salary for 999999
+col gender for a7
+col depart for a10
+col email for a16
+
+col addr for a6
+
+
+alter table members add(depart varchar2(10));
+
+update members set depart = '영업부' where id in(2,5,8,11);
+update members set depart = '홍보부' where id in(3,4,9,12);
+update members set depart = '개발부' where id in(1,6,7,10);
+
+update members set depart = '개발부' where id = 4;
+
+alter table members add(addr varchar2(10));
+
+update members set addr='부산' where id in(1,3,5,7);
+update members set addr='서울' where id in(2,4,9);
+update members set addr='제주' where id in(6,8,10,11,12);
+
+

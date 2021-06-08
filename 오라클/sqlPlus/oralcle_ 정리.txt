@@ -57,6 +57,10 @@ email varchar2(30)
 
 [데이터 삽입]
 insert into (테이블명)(컬럼1,컬럼2....) value(값1,값2....);
+insert into  members values(1,'티파니',700,'85/3/21','');
+insert into  members values(2,'수영',2000,'90/12/25','xxx@google.com');
+insert into  members values(3,'효연',800,'85/12/25','');
+insert into  members values(4,'서현',2050,'87/12/22','xxx@goole.com');
 
 [조회 형식]
 select (col1, col2....) from (테이블명) where (조건);
@@ -72,6 +76,7 @@ alter table (테이블명) rename column (전칼럼) to (신규칼럼);
 
 [칼럼 추가]
 alter table (테이블명) add (칼럼타입)
+alter table members add(kor int default 0 check (kor >=50 and kor<=70))
 
 [col 삭제]
 alter table (테이블명) drop column (칼럼명)
@@ -83,3 +88,16 @@ alter table [테이블명] modify ((칼럼) (변수))
 
 [테이블 이름변경]
 rename (구테이블) to (신규테이블);
+
+[중복제거]
+select distinct (컬럼) from (테이블)
+
+[집계 함수]
+max, min, avg, count 등이 있으며, select절에 집계함수 외에 다른 것을 넣으면 group화를 해야한다.
+where절에 집계함수를 넣으면 오류가 나며, having 절을 추가하여 해결한다.
+
+(순서)
+where
+group by 
+having
+order by

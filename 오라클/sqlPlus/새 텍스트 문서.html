@@ -1,0 +1,124 @@
+<html>
+	<head>
+		<title>배치도구</title>
+		<style>
+			.main{
+				border : solid 1px black;
+				height : 800px;
+				min-width: 650px;
+				display:table-cell;
+			}
+			.chTeam{
+				border : solid 1px black;
+				height : 300px;
+				width: 600px;
+				margin:autp;
+			}
+			.txtBox{
+				width: 80px;
+				height: 25px;
+				font-size:12px;
+				text-align:center;
+			}
+			chTeam>select{
+				width: 70px;
+			}
+			.chTeam>div{
+				height:33%;
+			}
+			.chTeam>div>input{
+				margin :15px;
+			}
+			.chTeam>select{
+				width: 80px;
+				height: 25px;
+				font-size:12px;
+				text-align:center;
+				margin :15px;
+			}
+		</style>
+		<script type="application/javascript">
+			console.log("식작함");
+			var tier = {"아이언","브론즈","실버","골드","플레티넘","다이아","마스터","챌린저"};
+			var tier = {
+						{"아이언1","아이언2","아이언3","아이언4"},
+						{"브론즈1","브론즈2","브론즈3","브론즈4"},
+						{"실버1","실버2","실버3","실버4"},
+						{"골드1","골드2","골드3","골드4"},
+						{"플레티넘1","플레티넘2","플레티넘3","플레티넘4"},
+						{"다이아1","다이아2","다이아3","다이아4"},
+						{"마스터"},{"챌린저"}
+					};
+		</script>
+	</head>
+	<body>
+	<div class='main'>
+		<div>
+			<div class='chTeam'>
+				<div>
+					<input type='text' class='txtBox' id='1t'> </intput>
+					<input type='text' class='txtBox' id='2t'> </intput>
+					<input type='text' class='txtBox' id='3t'> </intput>
+					<input type='text' class='txtBox' id='4t'> </intput>
+					<input type='text' class='txtBox' id='5t'> </intput>
+				</div>
+				
+				<select default=1>
+					<option value='' >선택</option>
+					<option value='' >2321</option>
+				</select>
+				<select>
+					<option value=''>선택</option>
+				</select>
+				<select>
+					<option value=''>선택</option>
+				</select>
+				<select>
+					<option value=''>선택</option>
+				</select>
+				<select>
+					<option value=''>선택</option>
+				</select>
+			</div>
+		</div>
+		<div>
+			<div class='chTeam'>
+				<div>
+					<input type='text' class='txtBox' id='1t'> </intput>
+					<input type='text' class='txtBox' id='2t'> </intput>
+					<input type='text' class='txtBox' id='3t'> </intput>
+					<input type='text' class='txtBox' id='4t'> </intput>
+					<input type='text' class='txtBox' id='5t'> </intput>
+				</div>
+				<select>
+					<option value=''>선택</option>
+				</select>
+				<select>
+					<option value=''>선택</option>
+				</select>
+				<select>
+					<option value=''>선택</option>
+				</select>
+				<select>
+					<option value=''>선택</option>
+				</select>
+				<select>
+					<option value=''>선택</option>
+				</select>
+			</div>
+		</div>
+		--버튼공간
+		<div>
+			<button/>
+		</div>
+	</div>
+	<div class='main'>
+		--결과 및 집계값
+		<div>
+		</div>
+		--나뉜 값
+		<div>
+		</div>
+	</div>
+	</body>
+</html>
