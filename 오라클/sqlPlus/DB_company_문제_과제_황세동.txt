@@ -13,6 +13,12 @@ create table company(
 	pay number
 );
 
+create sequence com_seq
+	increment by 1
+	start with 1
+	minvalue 1
+	maxvalue 10000
+
 insert~
 insert into company values(1,'보아','2000-3-12','대리',1000);
 insert into company values(2,'민아','2010-8-12','부장',9000);
@@ -236,7 +242,8 @@ rollback;
 
 
 17. 과장 급여 평균
-SQL> select position, avg(salary) from company where position = '과장' group by position;
+SQL> 
+select position, avg(salary) from company where position = '과장' group by position;
 
 POSITION             AVG(SALARY)
 -------------------- -----------
@@ -347,6 +354,7 @@ POSITION             AVG(SALARY)
 
 남자이면서 대리인 레코드 갯수 조회
 SQL> select position,gender,count(*) as "인원수" from company where gender = '남' and position = '대리' group by position,gender;
+select position,gender,count(*) as "인원수" from company group by position,gender;
 
 
 POSITI GENDER     인원수

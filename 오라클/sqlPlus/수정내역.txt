@@ -23,3 +23,110 @@ update members set addr='서울' where id in(2,4,9);
 update members set addr='제주' where id in(6,8,10,11,12);
 
 
+----------------------
+create table producer (
+P_CODE varchar2(10) primary key,
+P_NAME varchar2(15) not null,
+P_PRAICE int default 0
+);
+
+insert into producer values('A01','운동화',1000);
+insert into producer values('A02','원피스',2000);
+insert into producer values('A03','바지',3000);
+
+insert into producer values('A05','가방',4000);
+insert into consumer values('A04','태연',3100,'제주');
+
+alter table producer rename column p_code to code;
+alter table consumer rename column c_code to code;
+
+
+
+
+create table emp(
+empno number,
+ename varchar2(10),
+position varchar2(10),
+mgr number,
+deptno number
+);
+
+insert into emp values(1111,'태연','사원',1122,10);
+insert into emp values(1112,'수영','대리',1123,20);
+insert into emp values(1113,'서현','과장',1121,30);
+insert into emp values(1114,'효연','대리',1121,10);
+insert into emp values(1115,'유리','사원',1122,30);
+insert into emp values(1116,'써니','과장',1123,20);
+
+insert into emp(empno,ename,position,mgr) values(1121,'효린','부장',1123);
+insert into emp(empno,ename,position) values(1122,'보라','이사');
+insert into emp(empno,ename,position) values(1123,'다솜','사장');
+
+create table selfjoin as slef a.ename,b.ename
+from emp a, emp b
+where a.mgr= bb.empno;
+
+create table employee(
+empno number primary key, 
+ename varchar2(10),
+hiredate date,
+salary number,
+deptno number
+);
+
+insert into employee values(1,'kim','과장','2000-3-4',10000,10);
+insert into employee values(2,'lee','부장','2000-3-4',10000,20);
+insert into employee values(3,'park','부장','2000-3-4',10000,50);
+insert into employee values(4,'choi','과장','2000-3-4',10000,20);
+insert into employee values(5,'jung','대리','2000-3-4',10000,10);
+insert into employee values(6,'hong','대리','2000-3-4',10000,20);
+
+create table dept(
+deptno number primary key, 
+dname varchar2(10)
+);
+insert into dept values(10,'홍보부');
+insert into dept values(20,'인사부');
+insert into dept values(30,'연구부');
+
+commit;
+
+create table seller(
+sell_no number primary key,
+place varchar2(20) not null
+);
+
+insert into seller values(100,'교보');
+insert into seller values(200,'영풍');
+insert into seller values(300,'yes24');
+
+commit;
+
+alter table book add(sell_no number);
+update book set sell_no=100 where no in(1,3);
+update book set sell_no=200 where no in(2,6);
+update book set sell_no=300 where no in(4,5);
+
+
+alter table book add(customer_no number);
+
+create sequence cus_seq
+	increment by 1
+	start with 1
+	minvalue 1
+	maxvalue 10000;
+  
+create table customer(
+no number primary key,
+name varchar2(15),
+addr varchar2(15)
+);
+
+update book set customer_no =1 where no in(1,3);
+update book set customer_no =2 where no in(2,6);
+update book set customer_no =3 where no in(4,5);
+
+insert into customer values(cus_seq.nextval,'찬성','대구');
+insert into customer values(cus_seq.nextval,'백현','강릉');
+insert into customer values(cus_seq.nextval,'택연','울산');
+insert into customer values(cus_seq.nextval,'수호','목포');

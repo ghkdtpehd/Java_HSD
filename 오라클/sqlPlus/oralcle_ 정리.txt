@@ -1,5 +1,7 @@
 SQL Plus로 실행 > cmd로 실행됨
 
+CLRExtProc
+
 [마스터 사용자]
 id : sys
 pw : oracle as sysdba
@@ -101,3 +103,35 @@ where
 group by 
 having
 order by
+
+[임시 테이블]
+select * from dual;
+
+sysdate		시스템 날짜
+systimestamp	sysdate보다 상세히 표현
+to_char(변환할 것, 형식)  >> yyyy-mm-dd hh24:mi:ss
+length(문자열)		문자열 길이
+lengthb(문자열)		문자열 바이트 크기
+instr(문자열, 찾을 문자)	문자열 찾기
+
+[교집합 조인]
+select * from (테이블1),(테이블2) where (테이블1.공통컬럼) = (테이블2.공통컬럼)
+select * from (테이블1) a inner join (테이블2) b on a.공통컬럼 = b.공통컬럼
+
+[합집합 조인]
+select * from (테이블1) a (방향) outter join (테이블2) b on a.공통컬럼 = b.공통컬럼
+ㄴ left, right, full 기준을 잡는다.
+
+[natural join]
+양쪽 테이블의 모든 공통되는 칼럼을 조건으로 교집합 조인
+select * from (테이블1) natural join (테이블2)
+ㄴselect 절에 특정 태이블 (a.code , c.name 등..)의 컬럼명을 사용하면 안된다.
+
+[self join]
+하나의 테이블에 2개의 별칭을 주어서 조인을 하는법
+자주 사용하는 테이블이면 생성할수있다
+
+create table selfjoin as 
+select a.ename emp_name,b.ename mgr_name
+from emp a, emp b
+where a.mgr= b.empno;
