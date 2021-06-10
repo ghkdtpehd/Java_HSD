@@ -1,0 +1,8 @@
+View : 가상의 테이블
+
+create or replace view (View 명) as
+select (col1,col2...) from (table 명);
+
+create or replace view (View 명) as
+select (col1,col2...) from (table 명) with read only;
+>> with read only를 기입시 View를 통해 수정할수 없다.

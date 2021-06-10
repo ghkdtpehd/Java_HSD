@@ -1,0 +1,28 @@
+set serveroutput on --db콘솔로 값을 보기
+
+declare
+	--변수 선언
+	x number := 100;
+	y number := 30;
+	z number;
+begin
+	z := x+y;
+	dbms_output.put('값: ');
+	dbms_output.put_line(z);
+end;
+
+
+declare
+  vsalary members.salary%type; >>>members의 salary의 타입과 동일하게 가겠다는 명령어
+begin
+end;
+
+
+
+declare
+  vempno  number := '&no';			>>no라는 이름으로 입력을 받는다.
+  vdeptno number := '&deptno';
+  vename  varchar2(10) := '&name';
+  vsalary number := '&sal';
+begin
+end;

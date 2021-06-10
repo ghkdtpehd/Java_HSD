@@ -1,6 +1,8 @@
 SQL Plus로 실행 > cmd로 실행됨
 
-CLRExtProc
+DML	조작어 : select, delect, insert, update		데이터의 변형, 조회하는 것들
+DDL 	정의어 : drop, create, alter, rename		테이블의 구조를 정의하는 것들
+DCL	제어어 : grant, revoke			권한을 주고 회수하는 것들
 
 [마스터 사용자]
 id : sys
@@ -9,6 +11,10 @@ pw : oracle as sysdba
 [사용자]
 id : jspid
 pw : jsppw
+
+[디벨로퍼 시스 접속]
+사용자이름 : sys as sysdba
+비번 : oracle
 
 [실행이 안될시]
 제어판 - 서비스 - 오라클 서비스 중지
@@ -131,7 +137,23 @@ select * from (테이블1) natural join (테이블2)
 하나의 테이블에 2개의 별칭을 주어서 조인을 하는법
 자주 사용하는 테이블이면 생성할수있다
 
-create table selfjoin as 
-select a.ename emp_name,b.ename mgr_name
-from emp a, emp b
-where a.mgr= b.empno;
+[inline]
+from 절에 selecte절이 들어가는 것
+
+rownum		들어온 row의 인덱스를 기억하는 특수col 
+rowid		row를 구분하기위한 고유의 문자열
+
+[ 등수 구하기 ]
+rank() 		:  중복되었을때 다음 숫자를 뛰어넘는다	rank	  1, 2, 2, 4, 5
+dense_rank()	:  중복되었을때 다음 숫자를 뛰어넘지 않는다. 	dense_rank 1, 2, 2, 3, 4,
+select dense_rank() over ( order by (col) desc)
+
+[외래키]
+부모 테이블과 연경하기 위하여 주는 키.
+create 절에서
+(col명) (자료형) references (부모테이블)(col명)			연결된 데이터가 있을경우 삭제 불가능
+(col명) (자료형) references (부모테이블)(col명) on delete set null	자식테이블에서 null로 기입
+(col명) (자료형) references (부모테이블)(col명) on delete cascade	삭제된 값과 연결되있는 데이터도 삭제
+
+제약조건 무시후 테이블 제거
+drop table (테이블 명) cascade constraints;

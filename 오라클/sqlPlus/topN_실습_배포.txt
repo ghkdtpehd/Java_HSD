@@ -1,0 +1,96 @@
+Inline View(Top N 절)
+
+정의 
+	from 절에 select 구문이 나온다.
+
+특수 컬럼(pseudo 컬럼)
+	rownum
+		테이블에 레코드가 들어간 순서를 기억하고 있는 특수 컬럼
+		시스템은 이것을 토대로 들어온 순서를 관리한다.
+	rowid
+		행을 구분하기 위한 고유 문자열(unique)
+		DB 전체에서 유일 무이하다.(인덱스에 사용)
+
+rownum, rowid에 대한 실습
+-- 다음과 같이 데이터를 입력하고 점수 랭킹 5위부터 6위까지 조회하시오
+-- 정답은 티아라와 소녀시대
+drop table rowtest;
+col name for a20
+create table rowtest(
+	name varchar2(30),
+	jumsu number
+);
+
+insert into rowtest values('소녀시대', 30 );
+insert into rowtest values('원더걸스', 20 );
+insert into rowtest values('빅뱅', 50 );
+insert into rowtest values('애프터스쿨', 80 );
+insert into rowtest values('비스트', 70 );
+insert into rowtest values('레드벨벳', 10 );
+insert into rowtest values('티아라', 40 );
+insert into rowtest values('EXO', 60 );
+commit;
+
+-- rowtest 테이블에 인서트시 [소녀시대] 데이터가 가장 먼저 인서트 되었다.
+select rownum, name, jumsu from rowtest;
+
+
+   ROWNUM NAME                      JUMSU
+--------- -------------------- ----------
+        1 소녀시대                     30
+        2 원더걸스                     20
+        3 빅뱅                         50
+        4 애프터스쿨                   80
+        5 비스트                       70
+        6 레드벨벳                         10
+        7 티아라                       40
+        8 EXO                         60
+
+
+-- 원더걸스의 rownum는 얼마인가요?  2
+select rowid, rownum, name, jumsu
+from rowtest;
+
+delete from rowtest where name = '소녀시대' ;
+
+-- 소녀시대가 사라진 후 원더걸스의 rownum는 얼마인가요?  1
+select rowid, rownum, name, jumsu
+from rowtest;
+
+ROWID                  ROWNUM NAME                      JUMSU
+------------------ ---------- -------------------- ----------
+AAADYFAABAAAKYyAAB          1 원더걸스                     20
+AAADYFAABAAAKYyAAC          2 빅뱅                         50
+AAADYFAABAAAKYyAAD          3 애프터스쿨                   80
+AAADYFAABAAAKYyAAE          4 비스트                       70
+AAADYFAABAAAKYyAAF          5 레드벨벳                         10
+AAADYFAABAAAKYyAAG          6 티아라                       40
+AAADYFAABAAAKYyAAH          7 EXO                         60
+
+
+-- rownum은 그때 그때 수시로 바뀔수 있지만, 인서트 된 순서는 흐트러지지 않는다.
+
+rollback ;
+
+-- 중요 : order by를 사용해도 rownum은 변함이 없다.
+select rownum, name, jumsu from rowtest order by jumsu desc;
+
+    ROWNUM NAME                      JUMSU
+---------- -------------------- ----------
+         3 애프터스쿨                   80
+         4 비스트                       70
+         7 EXO                         60
+         2 빅뱅                         50
+         6 티아라                       40
+         1 원더걸스                     20
+         5 레드벨벳                         10
+
+
+
+-- rownum을 인위적으로 변경하려면 인라인(Inline) 뷰를 사용해야 한다.
+-- Inline View 필수 요소
+	from 절에 사용되는 서브 쿼리(select 절)
+	사용 가능한 비교 연산자 : <, <=
+
+
+

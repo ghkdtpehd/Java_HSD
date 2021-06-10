@@ -1,132 +1,122 @@
-col id for 9999
-col name for a7
-col salary for 999999
-col gender for a7
-col depart for a10
-col email for a16
+drop table person;
+create table person(
+  num number primary key,
+  id varchar2(10),
+  name varchar2(10),
+  addr varchar2(10)
+);
 
-col addr for a6
+insert into person values(1,'son','손흥민','제주');
+insert into person values(2,'park','박세리','대전');
+
+commit;
 
 
-alter table members add(depart varchar2(10));
+create table person2 as
+select num,id from person;
 
-update members set depart = '영업부' where id in(2,5,8,11);
-update members set depart = '홍보부' where id in(3,4,9,12);
-update members set depart = '개발부' where id in(1,6,7,10);
+insert into person values(3,'kang','강호동','마산');
 
-update members set depart = '개발부' where id = 4;
+-------------------
+--sys 계정에서 해야함
+grant create view to jspid;
+-------------------
 
-alter table members add(addr varchar2(10));
+create or replace view person_view as
+select num,id from person;
 
-update members set addr='부산' where id in(1,3,5,7);
-update members set addr='서울' where id in(2,4,9);
-update members set addr='제주' where id in(6,8,10,11,12);
+show user;
 
+insert into person values(4,'hong','홍길동','서울');
+
+update person_view set id='choi' where num = 3;
+
+delete from person where num=4;
+
+insert into person_view values(5,'jung');
+
+drop view person_view;
+
+-------------------------------------
+create or replace view person_view as
+select num,id from person with read only;
+
+update person set id='sin' where num = 1;
+
+update person_view set szvid='park' where num = 2;
+
+-------------------------
+drop table rowtest;
+create table rowtest(
+	name varchar2(30),
+	jumsu number
+);
+
+insert into rowtest values('소녀시대', 30 );
+insert into rowtest values('원더걸스', 20 );
+insert into rowtest values('빅뱅', 50 );
+insert into rowtest values('애프터스쿨', 80 );
+insert into rowtest values('비스트', 70 );
+insert into rowtest values('레드벨벳', 10 );
+insert into rowtest values('티아라', 40 );
+insert into rowtest values('EXO', 60 );
+commit;
+select rownum, name, jumsu from rowtest;
+
+delete from rowtest where name = '소녀시대' ;
+
+update rowtest set jumsu = 70 where name in ('티아라','EXO');
 
 ----------------------
-create table producer (
-P_CODE varchar2(10) primary key,
-P_NAME varchar2(15) not null,
-P_PRAICE int default 0
+drop table department cascade constraints;
+create table department(
+dno number primary key,
+dname varchar2(15)
 );
 
-insert into producer values('A01','운동화',1000);
-insert into producer values('A02','원피스',2000);
-insert into producer values('A03','바지',3000);
-
-insert into producer values('A05','가방',4000);
-insert into consumer values('A04','태연',3100,'제주');
-
-alter table producer rename column p_code to code;
-alter table consumer rename column c_code to code;
-
-
-
-
-create table emp(
-empno number,
-ename varchar2(10),
-position varchar2(10),
-mgr number,
-deptno number
-);
-
-insert into emp values(1111,'태연','사원',1122,10);
-insert into emp values(1112,'수영','대리',1123,20);
-insert into emp values(1113,'서현','과장',1121,30);
-insert into emp values(1114,'효연','대리',1121,10);
-insert into emp values(1115,'유리','사원',1122,30);
-insert into emp values(1116,'써니','과장',1123,20);
-
-insert into emp(empno,ename,position,mgr) values(1121,'효린','부장',1123);
-insert into emp(empno,ename,position) values(1122,'보라','이사');
-insert into emp(empno,ename,position) values(1123,'다솜','사장');
-
-create table selfjoin as slef a.ename,b.ename
-from emp a, emp b
-where a.mgr= bb.empno;
-
+drop table employee;
 create table employee(
-empno number primary key, 
+eno number,
 ename varchar2(10),
-hiredate date,
-salary number,
-deptno number
+--dno number references department(dno) on delete set null
+dno number references department(dno) on delete cascade
 );
 
-insert into employee values(1,'kim','과장','2000-3-4',10000,10);
-insert into employee values(2,'lee','부장','2000-3-4',10000,20);
-insert into employee values(3,'park','부장','2000-3-4',10000,50);
-insert into employee values(4,'choi','과장','2000-3-4',10000,20);
-insert into employee values(5,'jung','대리','2000-3-4',10000,10);
-insert into employee values(6,'hong','대리','2000-3-4',10000,20);
+insert into department values(10,'인사부');
+insert into department values(20,'영업부');
+insert into department values(30,'홍보부');
 
-create table dept(
-deptno number primary key, 
-dname varchar2(10)
-);
-insert into dept values(10,'홍보부');
-insert into dept values(20,'인사부');
-insert into dept values(30,'연구부');
+
+insert into employee values(1,'kim',30);
+insert into employee values(2,'chi',10);
+insert into employee values(3,'hong',20);
+insert into employee values(4,'park',30);
+--insert into employee values(5,'jung',60);
 
 commit;
+select * from employee;
+--delete from department where dno = 30;
 
-create table seller(
-sell_no number primary key,
-place varchar2(20) not null
+--------------------
+drop table product;
+create table product(
+  pcode varchar2(10) primary key,
+  pname varchar2(15),
+  price number
 );
 
-insert into seller values(100,'교보');
-insert into seller values(200,'영풍');
-insert into seller values(300,'yes24');
+drop table consumer cascade constraints;
+create table consumer(
+  code varchar2(10) references product(pcode) on delete set null,
+  cname varchar2(10)
+);
+
+insert into product values('p03','맥주',300);
+insert into product values('p01','사이다',100);
+insert into product values('p02','콜라',200);
+
+insert into consumer values('p01','아이유');
+insert into consumer values('p03','태연');
+insert into consumer values('p04','웬디');
 
 commit;
-
-alter table book add(sell_no number);
-update book set sell_no=100 where no in(1,3);
-update book set sell_no=200 where no in(2,6);
-update book set sell_no=300 where no in(4,5);
-
-
-alter table book add(customer_no number);
-
-create sequence cus_seq
-	increment by 1
-	start with 1
-	minvalue 1
-	maxvalue 10000;
-  
-create table customer(
-no number primary key,
-name varchar2(15),
-addr varchar2(15)
-);
-
-update book set customer_no =1 where no in(1,3);
-update book set customer_no =2 where no in(2,6);
-update book set customer_no =3 where no in(4,5);
-
-insert into customer values(cus_seq.nextval,'찬성','대구');
-insert into customer values(cus_seq.nextval,'백현','강릉');
-insert into customer values(cus_seq.nextval,'택연','울산');
-insert into customer values(cus_seq.nextval,'수호','목포');
