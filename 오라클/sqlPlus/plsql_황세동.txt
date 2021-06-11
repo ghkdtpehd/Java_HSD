@@ -1,0 +1,104 @@
+--***x단***
+--1 * 2 =2 전체 단 나오게 하기
+
+begin
+	for i in 2..9 loop
+		dbms_output.put_line('***'||i||'단***');
+		for j in 1..9 loop
+			dbms_output.put_line(i||' * '||j||' = '||i*j);
+		end loop;
+		dbms_output.put_line('---------------');
+	end loop;
+end;
+
+
+--------------------------------------------------
+--별찍기
+declare
+	x number := 0;
+	y number := 5;
+begin
+	for i in 1..5 loop
+		loop
+			dbms_output.put('*');
+			x := x+1;
+			exit when i <= x;
+		end loop;
+    
+		loop
+			dbms_output.put(' ');
+			y := y-1;
+			exit when i >= y;
+		end loop;
+    
+		x := 0;
+		y := 5;
+    dbms_output.put_line('');
+	end loop;
+end;
+
+--------------------------------------------------
+--select empno,deptno,ename,deptname(deptno) as "deptname" from emp;
+--10 총무부 20 인사부 30 연구부 그외 홍보부 // if와 case 2개로 만들기 /deptname함수 정의
+
+-- case 문
+create or replace function deptname(val number)
+return varchar as
+  str varchar(20);
+begin
+  case (val)
+    when 10 then return '총무부';
+    when 20 then return '인사부';
+    when 30 then return '연구부';
+    else return '홍보부';
+  end case;
+end;
+
+-- if문
+create or replace function deptname(val number)
+return varchar as
+  str varchar(20);
+begin
+  if val = 10 then return '총무부';
+  elsif val = 20 then return '인사부';
+  elsif val = 30 then return '연구부';
+  else return '홍보부';
+  end if;
+end;
+-------------------------
+--select to_char(ibsail,'yyyy/mm/dd') from company;
+--입사일이 10년 10퍼 / 15년 15퍼 인상 / 그밖은 5퍼인상 >>오늘이 기준, 프로시저 사용
+
+create or replace procedure upPrice as
+ x number := 1;
+ msabun number;
+ vday varchar(4);
+ chksabun number;
+begin
+  --최대 사번 구하기
+  select max(sabun)
+  into msabun
+  from company;
+  
+  --최대 사번보다 더 작동x
+  while x <= msabun loop
+    --중간에 빈 사번있는지 체크
+    select sabun
+    into chksabun
+    from company
+    where sabun = x;
+    if chksabun is not null then 
+      select to_char(sysdate,'yy')-to_char(ibsail,'yy')
+      into vday
+      from company
+      where sabun = x;
+      
+      --price // salary
+      if vday >= 15 then update company set salary = salary*1.15 where sabun = x;
+      elsif vday >=10 then update company set salary = salary*1.10 where sabun = x;
+      else update company set salary = salary*1.05 where sabun = x;
+      end if;
+      x := x+1;
+    end if;
+  end loop;
+end;

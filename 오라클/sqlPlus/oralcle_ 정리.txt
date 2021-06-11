@@ -157,3 +157,4 @@ create 절에서
 
 제약조건 무시후 테이블 제거
 drop table (테이블 명) cascade constraints;
+

@@ -26,3 +26,57 @@ declare
   vsalary number := '&sal';
 begin
 end;
+
+[if문]
+if (조건식) when (값);
+elsif (조건식) when (값);
+.....
+end if;
+
+[case문]
+case (필드명)
+	when (조건식) then (값)
+	when (조건식) then (값)
+	else
+end case;
+
+[반복문]
+loop
+	(반복 값)
+	exit when (반복종료 조건식)
+end loop;
+--------------------------------------
+for (변수) in [reverse] 1..10 loop		>>reverse 입력시 1>10 이아닌 10>1로 진행된다
+	반복값
+end loop;
+
+---------------------------------------
+while (변수) <=10 loop
+	반복값
+end loop
+
+
+
+
+
+[ 함수 ] >> 리턴을 함
+create or replace function test
+return number as
+	x number;
+	y number;
+begin
+	x := 100;
+	y := 200;
+	return x+y;
+end;
+
+--호출
+select test() from dual;
+
+[프로시저] >> 리턴하지 않음
+create or replace procedure raise_salary
+is
+(변수)
+begin
+(실행 값)
+end;
