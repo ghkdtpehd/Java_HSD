@@ -1,0 +1,17 @@
+drop table test;
+create table test(
+	num number,
+	name varchar2(10),
+	addr varchar2(10)
+);
+
+
+JDBC 프로그래밍 작성 순서
+1. 드라이버 로드
+2. 계정에 접속
+3. sql문 분석
+	3.1 ? 위치홀더 체워넣기
+4. sql문 실행
+	executeQuery : Select / executeUpdate : update, delete, insert
+5. 자원 반납
+	connection.close();

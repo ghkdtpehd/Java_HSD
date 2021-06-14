@@ -80,3 +80,47 @@ is
 begin
 (실행 값)
 end;
+
+
+
+[ cursor ]
+declare
+	(변수) company%rowtype;
+	cursor(커서이름) is -->>무조건 is만 가능 as 사용 불가능
+		select * from company;
+begin
+	open (커서이름);
+	loop
+		fetch (커서이름) into (변수);
+		exit when (커서이름) %NOTFOUND;
+		dbms_output_put_line( (변수).a ......);
+	end loop;
+	close (커서이름);
+end;
+----------------------------------------
+declare
+	vcom company%rowtype;
+	cursor sel_cursor is 
+		select * from company;
+begin
+	--for 문에서 open / close 는 사용x
+	for vcom in sel_cursor loop
+    
+	end loop;
+end;
+
+
+[예외처리]
+
+declare
+	i number :=0;
+begin
+	i := 10/0;
+	dbms_output.put_line(''success');
+exception when zero_divide then
+	dbms_output.put_line('오류발생');
+end;
+
+exception when others then >> 모든 예외처리
+
+raise invalid_deptno; --raise 예외명 / 사용자 정의 예외 생성
