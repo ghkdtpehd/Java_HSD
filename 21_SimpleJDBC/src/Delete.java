@@ -1,43 +1,39 @@
 import java.sql.Connection;
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Select {
+public class Delete {
 	public static void main(String[] args) {
-		String driver ="oracle.jdbc.driver.OracleDriver";
-//		String url = "jdbc:oracle:thin:@localhost:1521:orcl";
-		String url = "jdbc:oracle:thin:@localhost:1524:orc";
+		String driver= "oracle.jdbc.driver.OracleDriver";
+		String url =  "jdbc:oracle:thin:@localhost:1524:orc";
 		String id = "jspid";
 		String pw = "jsppw";
 		
 		try {
 			Class.forName(driver);
-			
 			Connection conn = DriverManager.getConnection(url,id,pw);
 			
-			String sql = "select * from test";
+			String sql = "delete from test where num = 3";
 			
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ResultSet rs = ps.executeQuery();
+			int num = ps.executeUpdate();
 			
-			while(rs.next()) {
-				int num = rs.getInt("num");
-				String name = rs.getString("name");
-				String addr= rs.getString ("addr");
-				System.out.println(num+","+name+","+addr);
+			if(num == 0) {
+				System.out.println("삭제한 데이터가 없습니다.");
+			}else {
+				System.out.println("삭제된 데이터는 "+num+"건 입니다.");
 			}
 			
-			rs.close();
 			ps.close();
 			conn.close();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 		
 	}
 }
