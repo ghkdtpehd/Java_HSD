@@ -26,7 +26,11 @@ public class BookMain {
 					printConsol(dao.getBookList());
 					break;
 				case 2 : 
-					printConsol(choiceBook());
+					String[] chsList = choiceBook();
+					System.out.print("조회할 "+chsList[1]+" :");
+					chsList[1] = sc.next();
+					
+					printConsol(dao.getBookChoiceList(chsList));
 					break;
 				case 3 : 
 					updateBook();
@@ -102,29 +106,29 @@ public class BookMain {
 		}
 	}
 
-	private ArrayList<BookBean> choiceBook() {
+	private String[] choiceBook() {
 		String[] chsList = new String[2]; 
 		String nextQ = "";
 		System.out.print("제목:1\t저자:2\t출판사:3\t번호입력>> ");
 		switch(sc.nextInt()) {
 		case 1:
 			chsList[0] = "title";
-			nextQ = "제목";
+			chsList[1] = "제목";
 			break;
 		case 2:
 			chsList[0] = "author";
-			nextQ = "저자";
+			chsList[1] = "저자";
 			break;
 		case 3:
 			chsList[0] = "publisher";
-			nextQ = "출판사";
+			chsList[1] = "출판사";
 			break;
+		default:
+			System.out.println("1~3사이의 번호를 입력해주세요.");
 		}
 
-		System.out.print("조회할 "+nextQ+" :");
-		chsList[1] = sc.next();
 		
-		return dao.getBookChoiceList(chsList);
+		return chsList;
 	}
 
 	private void printConsol(ArrayList<BookBean> list) {
