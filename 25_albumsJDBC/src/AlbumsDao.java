@@ -144,4 +144,41 @@ public class AlbumsDao {
 		return count;
 	}
 
+	public ArrayList<AlbumsBean> getAlubmBySerch(String str, String val) {
+		getConnection();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		ArrayList<AlbumsBean> list = new ArrayList<AlbumsBean>();
+		
+		String sql =  "select * from albums where "+str+"=?";
+		try {
+			ps = conn.prepareStatement(sql);
+			ps.setString(1,val);
+			
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				AlbumsBean ab = new AlbumsBean();
+				ab.setNum(rs.getInt("num"));
+				ab.setSong(rs.getString("song"));
+				ab.setSinger(rs.getString("singer"));
+				ab.setCompany(rs.getString("company"));
+				ab.setPrice(rs.getInt("price"));
+				ab.setPub_day(String.valueOf(rs.getDate("pub_day")));
+				
+				list.add(ab);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				conn.close();
+				rs.close();
+				ps.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
+	}
+
 }

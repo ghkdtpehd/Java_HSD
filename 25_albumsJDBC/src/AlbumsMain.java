@@ -12,6 +12,7 @@ public class AlbumsMain {
 		while(true) {
 			System.out.println("====메뉴 선택하기====");
 			System.out.println("1.모든 정보 조회");
+			System.out.println("2.조건 정보 조회");
 			System.out.println("4.앨범 수정");
 			System.out.println("5.앨범 삭제");
 			System.out.println("6.앨범 추가");
@@ -24,6 +25,7 @@ public class AlbumsMain {
 					printList(dao.getAllAlbumList());
 					break;
 				case 2:
+					getAlubmBySerch();
 					break;
 				case 3:
 					break;
@@ -47,6 +49,20 @@ public class AlbumsMain {
 			}
 		}
 	}
+	private void getAlubmBySerch() {
+		String[][] str = {{"제목","title"},{"가수","singer"},{"회사","company"}};
+		System.out.println("제목검색:1\t가수검색:2\t회사검색");
+		System.out.print("검색할 항목을 선택: ");
+		
+		int num = sc.nextInt();
+		if(num>0 && num<=3) {
+			System.out.print("검색할 "+str[num-1][0]+"을 선택: ");
+			printList(dao.getAlubmBySerch(str[num-1][1],sc.next()));
+		}else {
+			System.out.println("1~3의 숫자만 입력해주세요.");
+		}
+	}
+
 	private void insertAlbum() {
 		AlbumsBean ab = new AlbumsBean();
 		System.out.println("번호는 시퀀스로 자동 처리됩니다.");
