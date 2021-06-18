@@ -4,6 +4,7 @@
 temp/
 .metadata
 .classpath
+**/.classpath
 .settings
 .project
 ojdbc8.jar
