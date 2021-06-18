@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class AlbumsDao {
 	String driver = "oracle.jdbc.driver.OracleDriver";
-	String url = "jdbc:oracle:thin:@localhost:1524:orc";
+	String url = "jdbc:oracle:thin:@localhost:1521:orcl";
 	String id = "jspid";
 	String pw = "jsppw";
 	Connection conn = null;
@@ -150,11 +150,87 @@ public class AlbumsDao {
 		ResultSet rs = null;
 		ArrayList<AlbumsBean> list = new ArrayList<AlbumsBean>();
 		
-		String sql =  "select * from albums where "+str+"=?";
+		String sql =  "select * from albums where upper("+str+") like ? order by num asc";
 		try {
 			ps = conn.prepareStatement(sql);
-			ps.setString(1,val);
+			ps.setString(1,"%"+val.toUpperCase()+"%");
 			
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				AlbumsBean ab = new AlbumsBean();
+				ab.setNum(rs.getInt("num"));
+				ab.setSong(rs.getString("song"));
+				ab.setSinger(rs.getString("singer"));
+				ab.setCompany(rs.getString("company"));
+				ab.setPrice(rs.getInt("price"));
+				ab.setPub_day(String.valueOf(rs.getDate("pub_day")));
+				
+				list.add(ab);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				conn.close();
+				rs.close();
+				ps.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
+	}
+
+	public ArrayList<AlbumsBean> getAlbumByRange(int stratNum, int endNum) {
+		getConnection();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sql = "select * "
+				   + "from (select num,song,singer,company,price,pub_day,"
+				   + "				dense_rank() over(order by price desc,singer asc) rank "
+				   + "		from albums) "
+				   + "where rank between ? and ?";
+		ArrayList<AlbumsBean> list = new ArrayList<AlbumsBean>();
+		
+		try {
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, stratNum);
+			ps.setInt(2, endNum);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				AlbumsBean ab = new AlbumsBean();
+				ab.setNum(rs.getInt("num"));
+				ab.setSong(rs.getString("song"));
+				ab.setSinger(rs.getString("singer"));
+				ab.setCompany(rs.getString("company"));
+				ab.setPrice(rs.getInt("price"));
+				ab.setPub_day(String.valueOf(rs.getDate("pub_day")));
+				
+				list.add(ab);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				conn.close();
+				rs.close();
+				ps.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
+	}
+
+	public ArrayList<AlbumsBean> refindAlbum(String str1, String str2) {
+		getConnection();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sql = "select * from albums order by "+str1+" "+str2;
+		ArrayList<AlbumsBean> list = new ArrayList<AlbumsBean>();
+		
+		try {
+			ps = conn.prepareStatement(sql);,.,.kl
 			rs = ps.executeQuery();
 			while(rs.next()) {
 				AlbumsBean ab = new AlbumsBean();

@@ -1,21 +1,30 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class AlbumsMain {
 	Scanner sc = new Scanner(System.in); 
 	AlbumsDao dao = new AlbumsDao();
-	AlbumsMain(){
+	
+	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	
+	AlbumsMain() throws IOException{
 		init();
 	}
 	
-	void init(){
+	void init() throws IOException{
 		while(true) {
 			System.out.println("====메뉴 선택하기====");
 			System.out.println("1.모든 정보 조회");
 			System.out.println("2.조건 정보 조회");
+			System.out.println("3.가격 범위 조건 조회(가격:내림차순, 가수:오름차순)");
 			System.out.println("4.앨범 수정");
 			System.out.println("5.앨범 삭제");
 			System.out.println("6.앨범 추가");
+			System.out.println("7.앨범 정렬");
 			System.out.println("8.프로그램 종료");
 			System.out.print("메뉴 선택 >>");
 			int menu = sc.nextInt();
@@ -28,6 +37,7 @@ public class AlbumsMain {
 					getAlubmBySerch();
 					break;
 				case 3:
+					getAlbumByRange();
 					break;
 				case 4:
 					updateAlbum();
@@ -39,6 +49,7 @@ public class AlbumsMain {
 					insertAlbum();
 					break;
 				case 7:
+					refindAlbum();
 					break;
 				case 8:
 					System.out.println("프로그램을 종료합니다.");
@@ -49,31 +60,63 @@ public class AlbumsMain {
 			}
 		}
 	}
+	private void refindAlbum() {
+		String[][] str = {{"num","song","singer"},{"asc","desc"}};
+		System.out.println("정렬할 항목 선택");
+		System.out.print("번호:1\t노래제목:2\t가수명:3\t 번호입력>>");
+		int num1 = sc.nextInt()-1; 
+		System.out.println("정렬방법 선택");
+		System.out.print("오름차순:1\t내림차순:2\t번호입력>>");
+		int num2 = sc.nextInt()-1;
+		
+		printList(dao.refindAlbum(str[0][num1],str[1][num2]));
+	}
+
+	private void getAlbumByRange() throws NumberFormatException, IOException {
+		System.out.print("시작 등수 입력:");
+		int stratNum = Integer.parseInt(br.readLine());
+		System.out.print("끝 등수 입력:");
+		int endNum = Integer.parseInt(br.readLine());
+		
+		printList(dao.getAlbumByRange(stratNum,endNum));
+	}
+
 	private void getAlubmBySerch() {
-		String[][] str = {{"제목","title"},{"가수","singer"},{"회사","company"}};
+		String[][] str = {{"제목","song"},{"가수","singer"},{"회사","company"}};
 		System.out.println("제목검색:1\t가수검색:2\t회사검색");
 		System.out.print("검색할 항목을 선택: ");
 		
 		int num = sc.nextInt();
 		if(num>0 && num<=3) {
 			System.out.print("검색할 "+str[num-1][0]+"을 선택: ");
-			printList(dao.getAlubmBySerch(str[num-1][1],sc.next()));
+			try {
+				printList(dao.getAlubmBySerch(str[num-1][1],br.readLine()));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}else {
 			System.out.println("1~3의 숫자만 입력해주세요.");
 		}
 	}
 
-	private void insertAlbum() {
+	private void insertAlbum() throws IOException {
 		AlbumsBean ab = new AlbumsBean();
 		System.out.println("번호는 시퀀스로 자동 처리됩니다.");
 		System.out.println("노래를 입력: ");
-		ab.setSong(sc.next());
+		ab.setSong(br.readLine());
 		System.out.println("가수를 입력: ");
-		ab.setSinger(sc.next());
+		ab.setSinger(br.readLine());
 		System.out.println("회사를 입력: ");
-		ab.setCompany(sc.next());
+		ab.setCompany(br.readLine());
 		System.out.println("가격를 입력: ");
-		ab.setPrice(sc.nextInt());
+		do {
+			try {
+				ab.setPrice(Integer.parseInt(br.readLine()));
+				break;
+			}catch(NumberFormatException e) {
+				System.out.println("가격은 숫자만 입력해주세요.");
+			}
+		}while(true);
 		System.out.println("출고일를 입력: ");
 		ab.setPub_day(sc.next());
 		
@@ -135,6 +178,10 @@ public class AlbumsMain {
 		}
 	}
 	public static void main(String[] args) {
-		new AlbumsMain();
+		try {
+			new AlbumsMain();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
