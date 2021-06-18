@@ -3,4 +3,7 @@
 *.iml
 temp/
 .metadata
+.classpath
+.settings
+.project
 ojdbc8.jar
