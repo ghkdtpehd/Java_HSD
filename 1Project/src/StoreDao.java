@@ -7,8 +7,8 @@ import java.util.ArrayList;
 
 public class StoreDao {
 	String driver = "oracle.jdbc.driver.OracleDriver";
-	String url = "jdbc:oracle:thin:@localhost:1524:orc";
-//	String url = "jdbc:oracle:thin:@localhost:1521:orcl";
+//	String url = "jdbc:oracle:thin:@localhost:1524:orc";
+	String url = "jdbc:oracle:thin:@localhost:1521:orcl";
 	String id = "jspid";
 	String pw = "jsppw";
 	Connection conn = null;
@@ -50,7 +50,6 @@ public class StoreDao {
 				ps.close();
 				rs.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -62,7 +61,7 @@ public class StoreDao {
 		ResultSet rs = null;
 		ArrayList<StoreBean> list = new ArrayList<StoreBean>();
 		try {
-			String sql = "select * from bookstore";
+			String sql = "select * from bookstore order by no asc";
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
 			while(rs.next()) {
@@ -79,6 +78,147 @@ public class StoreDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			try {
+				ps.close();
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
+	}
+
+	public ArrayList<StoreBean> getAllUserList() {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		ArrayList<StoreBean> list = new ArrayList<StoreBean>();
+		try {
+			String sql = "select * from book_user order by no asc";
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				StoreBean sb = new StoreBean();
+				sb.setNo(rs.getInt("no"));
+				sb.setName(rs.getString("name"));
+				sb.setId(rs.getString("id"));
+				sb.setPw(rs.getString("pw"));
+				sb.setAge(rs.getInt("age"));
+				sb.setGender(rs.getString("gender"));
+				sb.setAddress(rs.getString("address"));
+				sb.setEmail(rs.getString("email"));
+				sb.setSign_up(String.valueOf(rs.getDate("sign_up")));
+				sb.setRank(rs.getInt("rank"));
+				sb.setRental_cnt(rs.getInt("rental_cnt"));
+				
+				list.add(sb);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				ps.close();
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
+	}
+
+	public int insertBook(StoreBean vo) {
+		PreparedStatement ps = null;
+		int cnt = 0;
+		String pub = "";
+		try {
+			if(vo.getPub_date().equals("")) {
+				pub = "sysdate";
+			}else {
+				pub = "'"+vo.getPub_date()+"'";
+			}
+			String sql = "insert into bookstore values(bookseq.nextval,?,?,?,?,"+pub+",0)";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, vo.getTitle());
+			ps.setString(2, vo.getAuthor());
+			ps.setInt(3, vo.getPrice());
+			ps.setString(4, vo.getPublisher());
+			
+			cnt = ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				ps.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return cnt ;
+	}
+
+	public int deleteBook(int bookno) {
+		PreparedStatement ps = null;
+		int cnt = 0;
+		try {
+			String sql = "delete from bookstore where no = ?";
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, bookno);
+			
+			cnt = ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				ps.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return cnt ;
+	}
+
+	public ArrayList<StoreBean> selectBookUser(String[] sqlStr) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		ArrayList<StoreBean> list = new ArrayList<StoreBean>();
+		String sql = "select * from book_user";
+
+		if(!sqlStr[3].equals("")) {
+			sql+=" where "+sqlStr[2]+" like '%"+sqlStr[3]+"%' ";
+		}
+		if(!sqlStr[0].equals("")) {
+			sql+=" order by "+sqlStr[1]+" "+sqlStr[0];
+		}
+		try {
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				StoreBean sb = new StoreBean();
+				sb.setNo(rs.getInt("no"));
+				sb.setName(rs.getString("name"));
+				sb.setId(rs.getString("id"));
+				sb.setPw(rs.getString("pw"));
+				sb.setAge(rs.getInt("age"));
+				sb.setGender(rs.getString("gender"));
+				sb.setAddress(rs.getString("address"));
+				sb.setEmail(rs.getString("email"));
+				sb.setSign_up(String.valueOf(rs.getDate("sign_up")));
+				sb.setRank(rs.getInt("rank"));
+				sb.setRental_cnt(rs.getInt("rental_cnt"));
+				
+				list.add(sb);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				ps.close();
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return list;
 	}
