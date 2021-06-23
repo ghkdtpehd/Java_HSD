@@ -17,7 +17,7 @@ public class StoreBean {
 	private String email;
 	private String sign_up;
 	private int rank;
-	private int rental_cnt;
+	private String rental_cnt;
 	//±ÇÇÑ
 	private int rankno;
 	
@@ -117,10 +117,10 @@ public class StoreBean {
 	public void setRank(int rank) {
 		this.rank = rank;
 	}
-	public int getRental_cnt() {
+	public String getRental_cnt() {
 		return rental_cnt;
 	}
-	public void setRental_cnt(int rental_cnt) {
+	public void setRental_cnt(String rental_cnt) {
 		this.rental_cnt = rental_cnt;
 	}
 	public int getRankno() {
