@@ -88,4 +88,38 @@ public class StoreMain extends JFrame{
 		cnt += dao.updateRemoveBookRent(bookNo);
 		return cnt;
 	}
+
+	public StoreBean getMyInfoData() {
+		return sb;
+	}
+
+	public int updateInfoData(StoreBean vo) {
+		vo.setNo(sb.getNo());
+		int cnt = dao.updateInfoData(vo);
+		if(cnt != 0) {
+			sb.setPw(vo.getPw());
+			sb.setAge(vo.getAge());
+			sb.setGender(vo.getGender());
+			sb.setAddress(vo.getAddress());
+			sb.setEmail(vo.getName());
+		}
+		return cnt;
+	}
+
+	public int insertApplayData(StoreBean vo) {
+		vo.setNo(sb.getNo());
+		return dao.insertApplayData(vo);
+	}
+
+	public ArrayList<StoreBean> getAllApplayList() {
+		return dao.getAllApplayList();
+	}
+
+	public ArrayList<StoreBean> selectApplayData(String[] sqlStr) {
+		return dao.selectApplayData(sqlStr);
+	}
+
+	public int userApplayChange(int applayNo) {
+		return dao.userApplayChange(applayNo);
+	}
 }

@@ -8,8 +8,8 @@ import java.util.HashMap;
 
 public class StoreDao {
 	String driver = "oracle.jdbc.driver.OracleDriver";
-	String url = "jdbc:oracle:thin:@localhost:1524:orc";
-//	String url = "jdbc:oracle:thin:@localhost:1521:orcl";
+//	String url = "jdbc:oracle:thin:@localhost:1524:orc";
+	String url = "jdbc:oracle:thin:@localhost:1521:orcl";
 	String id = "jspid";
 	String pw = "jsppw";
 	Connection conn = null;
@@ -40,6 +40,13 @@ public class StoreDao {
 			while(rs.next()) {
 				sb.setNo(rs.getInt("no"));
 				sb.setName(rs.getString("name"));
+				sb.setId(rs.getString("id"));
+				sb.setPw(rs.getString("pw"));
+				sb.setAge(rs.getInt("age"));
+				sb.setGender(rs.getString("gender"));
+				sb.setAddress(rs.getString("address"));
+				sb.setEmail(rs.getString("email"));
+				sb.setSign_up(String.valueOf(rs.getDate("sign_up")));
 				sb.setRank(rs.getInt("rank"));
 				sb.setRental_cnt(rs.getString("rental_cnt"));
 			}
@@ -306,7 +313,6 @@ public class StoreDao {
 			ps.setInt(7, vo.getRank());
 			ps.setInt(8, vo.getNo());
 			
-			System.out.println(sql);
 			cnt = ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -381,8 +387,6 @@ public class StoreDao {
 			
 			while(rs.next()) {
 				renStr = rs.getString("rental_cnt");
-				
-				System.out.println(renStr);
 			}
 			String[] rentals = renStr.split(",");
 			renStr = "";
@@ -589,5 +593,171 @@ public class StoreDao {
 			}
 		}
 		return rentalNo==userNo;
+	}
+
+	public int updateInfoData(StoreBean vo) {
+		PreparedStatement ps = null;
+		int cnt = 0;
+		try {
+			//저장 형식 4,1,43
+			String sql = "update book_user set pw=?,age=?,gender=?,address=?,email=? where no=?";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1,vo.getPw());
+			ps.setInt(2,vo.getAge());
+			ps.setString(3,vo.getGender());
+			ps.setString(4,vo.getAddress());
+			ps.setString(5,vo.getEmail());
+			ps.setInt(6,vo.getNo());
+			
+			cnt = ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				ps.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return cnt;
+	}
+
+	public int insertApplayData(StoreBean vo) {
+		PreparedStatement ps = null;
+	int cnt = 0;
+	try {
+		String sql = "insert into book_applay values(bookapplayseq.nextval,?,?,?,?,?,sysdate,0)";
+		ps = conn.prepareStatement(sql);
+		ps.setString(1,vo.getTitle());
+		ps.setString(2,vo.getGenre());
+		ps.setString(3,vo.getAuthor());
+		ps.setString(4,vo.getPublisher());
+		ps.setString(5,vo.getContent());
+		ps.setInt(6,vo.getNo());
+		
+		cnt = ps.executeUpdate();
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}finally {
+		try {
+			ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	return cnt;
+	}
+
+	public ArrayList<StoreBean> getAllApplayList() {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		ArrayList<StoreBean> list = new ArrayList<StoreBean>();
+		String sql = "select * from book_applay order by no asc";
+		try {
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				StoreBean sb = new StoreBean();
+				sb.setNo(Integer.parseInt(rs.getString("no")));
+				sb.setTitle(rs.getString("title"));
+				sb.setGenre(rs.getString("genre"));
+				sb.setAuthor(rs.getString("author"));
+				sb.setPublisher(rs.getString("publisher"));
+				sb.setContent(rs.getString("content"));
+				sb.setInputdate(String.valueOf(rs.getDate("inputdate")));
+				sb.setYn(rs.getInt("yn"));
+				sb.setUserno(rs.getInt("userno"));
+				
+				list.add(sb);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				ps.close();
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
+	}
+
+	public ArrayList<StoreBean> selectApplayData(String[] sqlStr) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		ArrayList<StoreBean> list = new ArrayList<StoreBean>();
+		String sql = "select * from book_applay where 1=1 ";
+		String ynIn ="";
+		String order = "order by ";
+		boolean inchk = false;
+		for(int i=4;i<7;i++) {
+			if(!sqlStr[i].isEmpty()) {
+				ynIn +="'"+sqlStr[i]+"',";
+				inchk = true;
+			}
+		}
+		if(inchk) {
+			ynIn = "and yn in("+ynIn;
+			ynIn = ynIn.substring(0,ynIn.length()-1);
+			ynIn += ") ";
+			sql +=ynIn;
+		}
+		if(!sqlStr[3].isEmpty()) {
+			sql+="and "+sqlStr[2]+" like '%"+sqlStr[3]+"%' ";
+		}
+		sql+=order+sqlStr[1]+" "+sqlStr[0];
+		try {
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				StoreBean sb = new StoreBean();
+				sb.setNo(Integer.parseInt(rs.getString("no")));
+				sb.setTitle(rs.getString("title"));
+				sb.setGenre(rs.getString("genre"));
+				sb.setAuthor(rs.getString("author"));
+				sb.setPublisher(rs.getString("publisher"));
+				sb.setContent(rs.getString("content"));
+				sb.setInputdate(String.valueOf(rs.getDate("inputdate")));
+				sb.setYn(rs.getInt("yn"));
+				sb.setUserno(rs.getInt("userno"));
+				
+				list.add(sb);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				ps.close();
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
+	}
+
+	public int userApplayChange(int applayNo) {
+		PreparedStatement ps = null;
+		int cnt = 0;
+		try {
+			//저장 형식 4,1,43
+			String sql = "update book_applay set yn=0 where no=?";
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, applayNo);
+			ps.executeUpdate();
+			cnt = ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				ps.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return cnt;
 	}
 }

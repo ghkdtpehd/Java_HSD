@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -11,8 +12,10 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -22,7 +25,9 @@ import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 
 
 public class StoreFrame extends JFrame implements ActionListener{
@@ -35,22 +40,29 @@ public class StoreFrame extends JFrame implements ActionListener{
 	JFrame ListF = null;
 	JFrame ListFI = null;
 	JFrame ListU = null;
+	JFrame ListUa = null;
 	JFrame ListInfo = null;
+	JFrame ListA = null;
 	Container ListC = null;
 	JTable table = null;
 	JTable userTable = null;
+	JTable applayTable = null;
 	private JScrollPane scrollPane = null;
 	private JScrollPane userScrollPane = null;
+	private JScrollPane applayScrollPane = null;
 
 	private HashMap<Integer,String> rankList = new HashMap<Integer,String>();
 	private String[] columnNames = {"번호","책이름","저자","단가","출판사","입고일자","대여여부"};
 	private String[] columnUsers = {"번호","이름","아이디","비밀번호","나이","성별","거주지","이메일","가입일","등급","대여한책"};
+	private String[] columnApplay = {"번호","제목","장르","저자","출판사","내용","신청일","입고여부","신청자"};
 	private Object[][] rowData = null;
 	ArrayList<StoreBean> list = null;
 	ArrayList<StoreBean> listUser = null;
+	ArrayList<StoreBean> applayUser = null;
 	
 	String[] serchStr = {"번호","이름","주소","이메일","등급"};
 	String[] serchBookStr = {"번호","책이름","저자","출판사"};
+	String[] serchApplayStr = {"번호","책이름","저자","출판사","사용자번호"};
 	String[] adminBtn = {"등록","삭제","회원목록","강제반납","신청목록"}; 
 	String[] userBtn = {"대여","반납","내정보","책신청"}; 
 	String[] BookInertBtn = {"대여","반납"}; 
@@ -58,21 +70,40 @@ public class StoreFrame extends JFrame implements ActionListener{
 	private JButton btnCancel =  new JButton("취소");
 	private JButton btnAuEdit =  new JButton("수정");
 	private JButton btnAuDis =  new JButton("탈퇴");
+	private JButton btnInfoEidt =  new JButton("수정");
+	private JButton btnInfoCan =  new JButton("돌아가기");
 	private JButton btnAuCencle =  new JButton("취소");
+	private JButton btnApplay =  new JButton("등록");
+	private JButton btnACencle =  new JButton("취소");
 	private JButton[] btnA = new JButton[adminBtn.length];
 	private JButton[] btnU = new JButton[userBtn.length];
 	private JButton btnUserch = new JButton("검색");
+	private JButton btnAserch = new JButton("검색");
 	private JButton btnBserch = new JButton("검색");
 	
-	JRadioButton[] oRadio = new JRadioButton[2];
+	private JButton btnApplay1 = new JButton("미입고");
+	private JButton btnApplay2 = new JButton("입고");
+	private JButton btnApplay3 = new JButton("거부");
+	private JButton btnApplayCan = new JButton("닫기");
+	
 	String[] userRadioName = {"오름차순","내림차순"};
+	String[] InfoRadioName = {"남자","여자"};
+	JRadioButton[] oRadio = new JRadioButton[2];
+	JRadioButton[] iRadio = new JRadioButton[2];
+	JRadioButton[] aRadio = new JRadioButton[2];
+	JCheckBox achk0 = new JCheckBox("미입고");
+	JCheckBox achk1 = new JCheckBox("입고");
+	JCheckBox achk2 = new JCheckBox("거부");
 	JComboBox<String> sherchCombo1 = new JComboBox<String>(serchStr);
 	JComboBox<String> sherchCombo2 = new JComboBox<String>(serchStr);
 	JComboBox<String> sherchBCombo1 = new JComboBox<String>(serchBookStr);
 	JComboBox<String> sherchBCombo2 = new JComboBox<String>(serchBookStr);
+	JComboBox<String> sherchACombo1 = new JComboBox<String>(serchApplayStr);
+	JComboBox<String> sherchACombo2 = new JComboBox<String>(serchApplayStr);
 	JLabel lblPRank_write = new JLabel("");
 	JTextField bookSerch = new JTextField(15);
 	JTextField userSerch = new JTextField(15);
+	JTextField applaySerch = new JTextField(20);
 	JTextField txtTitle = new JTextField();
 	JTextField txtAuthor = new JTextField();
 	JTextField txtPrice = new JTextField();
@@ -81,13 +112,25 @@ public class StoreFrame extends JFrame implements ActionListener{
 
 	JTextField txtPName	= new JTextField(15);
 	JTextField txtPId 	= new JTextField(15);
-	JTextField txtPPw 	= new JTextField(15);
+	JTextField txtPPw 	= new JPasswordField(15);
 	JTextField txtPAge	= new JTextField(15);
 	JTextField txtPGender = new JTextField(15);
 	JTextField txtPAddress = new JTextField(15);
 	JTextField txtPEmail = new JTextField(15);
 	JTextField txtPSign_up = new JTextField(15);
 	JTextField txtPRank = new JTextField(15);
+	JTextField txtIName= new JTextField(15);
+	JTextField txtIId= new JTextField(15);
+	JPasswordField txtIPw= new JPasswordField(15);
+	JTextField txtIAge= new JTextField(15);
+	JTextField txtIAddress= new JTextField(15);
+	JTextField txtIEmail= new JTextField(15);
+	JTextField txtISign_up= new JTextField(15);
+	JTextField txtATitle= new JTextField(20);
+	JTextField txtAGenre= new JTextField(20);
+	JTextField txtAAuthor= new JTextField(15);
+	JTextField txtAPublisher= new JTextField(20);
+	JTextArea txtAContent= new JTextArea();
 	
 	public StoreFrame(String title){
 		//로그인
@@ -204,6 +247,45 @@ public class StoreFrame extends JFrame implements ActionListener{
 		ListInfo.setVisible(true);
 	}
 	
+	public void applayFrame() {
+		//책신청
+		ListUa = new JFrame("책신청");
+		ListUa.setLayout(null);
+		
+		applayCompse();
+		ListUa.setResizable(false);
+		ListUa.setSize(400,500);
+		
+		Dimension frameSize = ListUa.getSize();
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		ListUa.setLocation((screenSize.width - frameSize.width)/2+550, (screenSize.height - frameSize.height)/2);
+		ListUa.setVisible(true);
+	}
+
+	public void applayAFrame() {
+		//신청관리
+		ListA = new JFrame("신청관리");
+		ListA.setLayout(null);
+		
+		applayUser = sm.getAllApplayList(); 
+		rowData = new Object[applayUser.size()][columnApplay.length];
+		fillApplayRowData();
+
+		applayTable = new JTable (rowData,columnApplay);
+		applayScrollPane = new JScrollPane(applayTable);
+		
+		applayACompse();
+		applayScrollPane.setBounds(0,40,770,450);
+		ListA.add(applayScrollPane);
+		ListA.setResizable(false);
+		ListA.setSize(780,500);
+		
+		Dimension frameSize = ListA.getSize();
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		ListA.setLocation((screenSize.width - frameSize.width)/2, (screenSize.height - frameSize.height)/2);
+		ListA.setVisible(true);
+	}
+	
 	public void loadListData(ArrayList<StoreBean> val_list) {
 		list = val_list;
 		rowData = new Object[list.size()][columnNames.length];
@@ -215,6 +297,7 @@ public class StoreFrame extends JFrame implements ActionListener{
 		table.repaint();
 		scrollPane.setViewportView(table);
 	}
+	
 	public void loadUserListData(ArrayList<StoreBean> val_list) {
 		listUser = val_list;
 		rowData = new Object[listUser.size()][columnUsers.length];
@@ -227,6 +310,18 @@ public class StoreFrame extends JFrame implements ActionListener{
 		userTable.repaint();
 		userScrollPane.setViewportView(userTable);
 	}
+	
+	public void loadApplayListData(ArrayList<StoreBean> val_list) {
+		applayUser = val_list;
+		rowData = new Object[applayUser.size()][columnApplay.length];
+		fillApplayRowData();
+		
+		applayTable = new JTable (rowData,columnApplay);
+		applayScrollPane.remove(applayTable);
+		applayTable.revalidate();
+		applayTable.repaint();
+		applayScrollPane.setViewportView(applayTable);
+	}
 
 	private void compse(int rank) {
 		//사용자 등급에 따른 UI변경
@@ -236,23 +331,23 @@ public class StoreFrame extends JFrame implements ActionListener{
 		
 		Radio.setLayout(null);
 		pSouth.setLayout(null);
-		Radio.setBounds(0, 0, 700, 40);
+		Radio.setBounds(0, 3, 700, 35);
 		pSouth.setBounds(0, 250, 700, 400);
 		Radio.add(sherchBCombo1);
-		sherchBCombo1.setBounds(110, 0, 60, 30);
+		sherchBCombo1.setBounds(80, 2, 60, 30);
 		for(int i=0;i<userRadioName.length;i++) {
 			oRadio[i] = new JRadioButton(userRadioName[i]);
 			userRg.add(oRadio[i]);
 			Radio.add(oRadio[i]);
 		}
-		oRadio[0].setBounds(180, 0, 75, 30);
-		oRadio[1].setBounds(255, 0, 75, 30);
+		oRadio[0].setBounds(140, 2, 75, 30);
+		oRadio[1].setBounds(215, 2, 75, 30);
 		Radio.add(sherchBCombo2);   
-		sherchBCombo2.setBounds(340, 0, 60, 30);
+		sherchBCombo2.setBounds(300,2, 60, 30);
 		Radio.add(bookSerch);
-		bookSerch.setBounds(410,0,150,30);
+		bookSerch.setBounds(370,2,150,30);
 		Radio.add(btnBserch);
-		btnBserch.setBounds(570,0,80,28);
+		btnBserch.setBounds(530,2,80,28);
 		
 		oRadio[0].setSelected(true);
 		btnBserch.addActionListener(this);
@@ -288,20 +383,20 @@ public class StoreFrame extends JFrame implements ActionListener{
 		pRadio.setBounds(0, 0, 700, 40);
 		pSouth.setBounds(0, 250, 700, 400);
 		pRadio.add(sherchCombo1);
-		sherchCombo1.setBounds(110, 0, 60, 30);
+		sherchCombo1.setBounds(80, 0, 60, 30);
 		for(int i=0;i<userRadioName.length;i++) {
 			oRadio[i] = new JRadioButton(userRadioName[i]);
 			userRg.add(oRadio[i]);
 			pRadio.add(oRadio[i]);
 		}
-		oRadio[0].setBounds(180, 0, 75, 30);
-		oRadio[1].setBounds(255, 0, 75, 30);
+		oRadio[0].setBounds(140, 0, 75, 30);
+		oRadio[1].setBounds(215, 0, 75, 30);
 		pRadio.add(sherchCombo2);   
-		sherchCombo2.setBounds(340, 0, 60, 30);
+		sherchCombo2.setBounds(300, 0, 60, 30);
 		pRadio.add(userSerch);
-		userSerch.setBounds(410,0,150,30);
+		userSerch.setBounds(370,0,150,30);
 		pRadio.add(btnUserch);
-		btnUserch.setBounds(570,0,80,28);
+		btnUserch.setBounds(530,0,80,28);
 		
 		oRadio[0].setSelected(true);
 		btnUserch.addActionListener(this);
@@ -377,7 +472,196 @@ public class StoreFrame extends JFrame implements ActionListener{
 	}
 	
 	private void userInfoCompse() {
+		JPanel iPRadio = new JPanel();
+		ButtonGroup inforRg = new ButtonGroup(); 
 		
+		StoreBean sb =  sm.getMyInfoData();
+		
+		Font infoGenderFont = new Font("Fixedsys", Font.BOLD,13);
+		Font infoFont = new Font("Fixedsys", Font.BOLD,14);
+		
+		iPRadio.setLayout(null);
+		for(int i=0;i<InfoRadioName.length;i++) {
+			iRadio[i] = new JRadioButton(InfoRadioName[i]);
+			inforRg.add(iRadio[i]);
+			iPRadio.add(iRadio[i]);
+			iRadio[i].setFont(infoGenderFont);
+		}
+		JLabel lblIName = new JLabel("이름"); 
+		lblIName.setFont(infoFont);
+		JLabel lblIId = new JLabel("아이디"); 
+		lblIId.setFont(infoFont);
+		JLabel lblIPw = new JLabel("비밀번호"); 
+		lblIPw.setFont(infoFont);
+		JLabel lblIAge = new JLabel("나이"); 
+		lblIAge.setFont(infoFont);
+		JLabel lblIGender = new JLabel("성별"); 
+		lblIGender.setFont(infoFont);
+		JLabel lblIAddress = new JLabel("거주지"); 
+		lblIAddress.setFont(infoFont);
+		JLabel lblIEmail = new JLabel("이메일"); 
+		lblIEmail.setFont(infoFont);
+		JLabel lblISign_up = new JLabel("가입일"); 
+		lblISign_up.setFont(infoFont);
+		
+		lblIName.setBounds(30, 50, 80, 30);
+		lblIId.setBounds(30, 90, 80, 30);
+		lblIPw.setBounds(30, 130, 80, 30);
+		lblIAge.setBounds(30, 170, 80, 30);
+		lblIGender.setBounds(30, 210, 80, 30);
+		lblIAddress.setBounds(30, 250, 80, 30);
+		lblIEmail.setBounds(30, 290, 80, 30);
+		lblISign_up.setBounds(30, 330, 80, 30);
+		
+		txtIName.setBounds(100,52,150,25);
+		txtIName.setEditable(false);
+		txtIId.setBounds(100,92,150,25);
+		txtIId.setEditable(false);
+		txtIPw.setBounds(100,132,150,25);
+		txtIAge.setBounds(100,172,150,25);
+		iRadio[0].setBounds(100,212,80,25);
+		iRadio[1].setBounds(180,212,80,25);
+		txtIAddress.setBounds(100,252,150,25);
+		txtIEmail.setBounds(100,292,150,25);
+		txtISign_up.setBounds(100,332,150,25);
+		txtISign_up.setEditable(false);
+		
+		btnInfoEidt.setBounds(26,400,90,25);
+		btnInfoCan.setBounds(173,400,90,25);
+		btnInfoEidt.addActionListener(this);
+		btnInfoCan.addActionListener(this);
+		
+		txtIName.setText(sb.getName());
+		txtIId.setText(sb.getId());
+		txtIPw.setText(sb.getPw());
+		txtIAge.setText(String.valueOf( sb.getAge()));
+		switch(sb.getGender()) {
+			case "남자":
+				iRadio[0].setSelected(true);
+				break;
+			case "여자":
+				iRadio[1].setSelected(true);
+				break;
+		}
+		txtIAddress.setText(sb.getAddress());
+		txtIEmail.setText(sb.getEmail());
+		txtISign_up.setText(sb.getSign_up());
+		
+		ListInfo.add(btnInfoEidt);
+		ListInfo.add(btnInfoCan);
+		ListInfo.add(lblIName);
+		ListInfo.add(lblIId);
+		ListInfo.add(lblIPw);
+		ListInfo.add(lblIAge);
+		ListInfo.add(lblIGender);
+		ListInfo.add(lblIAddress);
+		ListInfo.add(lblIEmail);
+		ListInfo.add(lblISign_up);
+		ListInfo.add(txtIName);
+		ListInfo.add(txtIId);
+		ListInfo.add(txtIPw);
+		ListInfo.add(txtIAge);
+		ListInfo.add(iRadio[0]);
+		ListInfo.add(iRadio[1]);
+		ListInfo.add(txtIAddress);
+		ListInfo.add(txtIEmail);
+		ListInfo.add(txtISign_up);
+	}
+	
+	private void applayCompse() {
+		StoreBean sb =  sm.getMyInfoData();
+		
+		Font infoFont = new Font("Fixedsys", Font.BOLD,14);
+		
+		JLabel lblATitle = new JLabel("제목"); 
+		lblATitle.setFont(infoFont);
+		JLabel lblAGenre = new JLabel("장르"); 
+		lblAGenre.setFont(infoFont);
+		JLabel lblAAuthor = new JLabel("작자"); 
+		lblAAuthor.setFont(infoFont);
+		JLabel lblAPublisher = new JLabel("출판사"); 
+		lblAPublisher.setFont(infoFont);
+		JLabel lblAContent = new JLabel("내용"); 
+		lblAContent.setFont(infoFont);
+		
+		lblATitle.setBounds(30, 50, 80, 30);
+		lblAGenre.setBounds(30, 90, 80, 30);
+		lblAAuthor.setBounds(30, 130, 80, 30);
+		lblAPublisher.setBounds(30, 170, 80, 30);
+		lblAContent.setBounds(30, 210, 80, 30);
+		
+		txtATitle.setBounds(100,52,240,25);
+		txtAGenre.setBounds(100,92,240,25);
+		txtAAuthor.setBounds(100,132,240,25);
+		txtAPublisher.setBounds(100,172,240,25);
+		txtAContent.setBounds(100,212,240,170);
+		Border border = BorderFactory.createLineBorder(Color.gray);
+		txtAContent.setBorder(BorderFactory.createCompoundBorder(border,
+	            BorderFactory.createEmptyBorder(1, 1, 1, 1)));
+		txtAContent.setLineWrap(true);
+		
+		btnApplay.setBounds(50,400,100,25);
+		btnACencle.setBounds(240,400,100,25);
+		btnApplay.addActionListener(this);
+		btnACencle.addActionListener(this);
+		
+		ListUa.add(btnApplay);
+		ListUa.add(btnACencle);
+		ListUa.add(lblATitle);
+		ListUa.add(lblAGenre);
+		ListUa.add(lblAAuthor);
+		ListUa.add(lblAPublisher);
+		ListUa.add(lblAContent);
+		ListUa.add(txtATitle);
+		ListUa.add(txtAGenre);
+		ListUa.add(txtAAuthor);
+		ListUa.add(txtAPublisher);
+		ListUa.add(txtAContent);
+	}
+	
+	private void applayACompse() {
+		ButtonGroup userRg = new ButtonGroup(); 
+		//ApplayRadioName
+		sherchACombo1.setBounds(10, 5, 80, 30);
+		ListA.add(sherchACombo1);
+		sherchACombo2.setBounds(260, 5, 80, 30);
+		ListA.add(sherchACombo2);   
+		for(int i=0;i<userRadioName.length;i++) {
+			aRadio[i] = new JRadioButton(userRadioName[i]);
+			userRg.add(aRadio[i]);
+			ListA.add(aRadio[i]);
+		}
+		aRadio[0].setSelected(true);
+		aRadio[0].setBounds(100, 5, 75, 30);
+		aRadio[1].setBounds(180, 5, 75, 30);
+		applaySerch.setBounds(348,5,150,30);
+		btnAserch.setBounds(500,5,60,30);
+		btnAserch.addActionListener(this);
+		btnApplay1.setBounds(37,400,120,30);
+		btnApplay2.setBounds(231,400,120,30);
+		btnApplay3.setBounds(424,400,120,30);
+		btnApplayCan.setBounds(615,400,120,30);
+		btnApplay1.addActionListener(this);
+		btnApplay2.addActionListener(this);
+		btnApplay3.addActionListener(this);
+		btnApplayCan.addActionListener(this);
+		
+		achk0.setBounds(570, 5, 70, 30);
+		achk1.setBounds(640, 5, 60, 30);
+		achk2.setBounds(700, 5, 70, 30);
+		achk0.setSelected(true);
+		achk1.setSelected(true);
+		achk2.setSelected(true);
+		
+		ListA.add(btnApplay1);
+		ListA.add(btnApplay2);
+		ListA.add(btnApplay3);
+		ListA.add(btnApplayCan);
+		ListA.add(btnAserch);
+		ListA.add(applaySerch);
+		ListA.add(achk0);
+		ListA.add(achk1);
+		ListA.add(achk2);
 	}
 
 	private void fillRowData() {
@@ -422,6 +706,37 @@ public class StoreFrame extends JFrame implements ActionListener{
 		}
 	}
 	
+	private void fillApplayRowData() {
+		//신청 리스트
+		Object[] arr = applayUser.toArray();
+		int cnt = 0;
+		
+		for(int i=0;i<arr.length;i++) {
+			StoreBean sb = (StoreBean)arr[i];
+			
+			rowData[i][cnt++] = sb.getNo();
+			rowData[i][cnt++] = sb.getTitle();
+			rowData[i][cnt++] = sb.getGenre();
+			rowData[i][cnt++] = sb.getAuthor();
+			rowData[i][cnt++] = sb.getPublisher();
+			rowData[i][cnt++] = sb.getContent();
+			rowData[i][cnt++] = sb.getInputdate();
+			switch(sb.getYn()) {
+			case 0:
+				rowData[i][cnt++] = "미입고";
+				break;
+			case 1:
+				rowData[i][cnt++] = "입고";
+				break;
+			case 2:
+				rowData[i][cnt++] = "거부";
+				break;
+			}
+			rowData[i][cnt++] = sb.getUserno();
+			cnt = 0;
+		}
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object obj = e.getSource();
@@ -429,7 +744,7 @@ public class StoreFrame extends JFrame implements ActionListener{
 			StoreBean userData = dao.checkUser(txtId.getText().trim(),txtPw.getText().trim());
 			if(userData.getNo() != 0) {
 				JOptionPane.showMessageDialog(this,"로그인 되었습니다.","로그인",JOptionPane.DEFAULT_OPTION);
-				setVisible(false);
+				dispose();
 				sm.ListLoad(userData);
 			}else {
 				JOptionPane.showMessageDialog(this,"ID 또는 PW 를 확인해주세요.","로그인",JOptionPane.WARNING_MESSAGE);
@@ -471,13 +786,13 @@ public class StoreFrame extends JFrame implements ActionListener{
 				if(cnt == 0) {
 					JOptionPane.showMessageDialog(this,"등록에 실패하였습니다.","등록 실패",JOptionPane.ERROR_MESSAGE);
 				}else {
-					ListFI.setVisible(false);
+					ListFIExit();
 					loadListData(sm.getAllUserList());
 				}
 			}
 		}else if(obj == btnCancel){
 			clearData();
-			ListFI.setVisible(false);
+			ListFIExit();
 		}else if(obj == btnA[1]){
 			int bookno =Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString());
 			String bookName =table.getValueAt(table.getSelectedRow(), 1).toString();
@@ -580,6 +895,7 @@ public class StoreFrame extends JFrame implements ActionListener{
 			}
 		}else if(obj == btnAuCencle){
 			clearUserData();
+			ListUExit();
 			ListU.setVisible(false);
 		}else if(obj == btnBserch){
 			//order , 조건 , 값
@@ -635,6 +951,88 @@ public class StoreFrame extends JFrame implements ActionListener{
 				loadListData(sm.getAllBookList());
 			}
 		}else if(obj == btnA[4]){
+			applayAFrame();
+		}else if(obj == btnApplay1){
+			int chk = JOptionPane.showConfirmDialog(this,"변경 하시겠습니까?","확인",JOptionPane.YES_NO_OPTION);
+			if(chk == JOptionPane.YES_OPTION) {
+				int applayNo =Integer.parseInt(applayTable.getValueAt(applayTable.getSelectedRow(), 0).toString());
+				
+				int cnt = sm.userApplayChange(applayNo);
+				if(cnt == 0) {
+					JOptionPane.showMessageDialog(this,"변경중 오류가 발생하였습니다.","변경 실패",JOptionPane.ERROR_MESSAGE);
+				}else {
+					
+					//여기해야함
+					loadListData(sm.getAllBookList());
+				}
+			}	
+		}else if(obj == btnApplay2){
+		}else if(obj == btnApplay3){
+		}else if(obj == btnApplayCan){
+			ListAExit();
+		}else if(obj == btnAserch){
+			String[] sqlStr = new String[7]; 
+			if(aRadio[0].isSelected()) {
+				sqlStr[0] = "asc";
+			}else {
+				sqlStr[0] = "desc";
+			}
+			//"번호","책이름","저자","출판사","사용자번호"
+			switch(sherchACombo1.getItemAt(sherchBCombo1.getSelectedIndex())) {
+				case "번호":
+					sqlStr[1] = "no";
+					break;
+				case "책이름":
+					sqlStr[1] = "title";
+					break;
+				case "저자":
+					sqlStr[1] = "author";
+					break;
+				case "출판사":
+					sqlStr[1] = "publisher";
+					break;
+				case "사용자번호":
+					sqlStr[1] = "userno";
+					break;
+			}
+			
+			//where
+			switch(sherchACombo2.getItemAt(sherchBCombo2.getSelectedIndex())) {
+				case "번호":
+					sqlStr[2] = "no";
+					break;
+				case "책이름":
+					sqlStr[2] = "title";
+					break;
+				case "저자":
+					sqlStr[2] = "author";
+					break;
+				case "출판사":
+					sqlStr[2] = "publisher";
+					break;
+				case "사용자번호":
+					sqlStr[2] = "userno";
+					break;
+			}
+			sqlStr[3] = applaySerch.getText();
+			if(achk0.isSelected()) {
+				sqlStr[4] = "0";
+			}else {
+				sqlStr[4] = "";
+			}
+				
+			if(achk1.isSelected()) {
+				sqlStr[5] = "1";
+			}else {
+				sqlStr[5] = "";
+			}
+			if(achk2.isSelected()) {
+				sqlStr[6] = "2";
+			}else {
+				sqlStr[6] = "";
+			}
+			ArrayList<StoreBean> list = sm.selectApplayData(sqlStr);
+			loadApplayListData(list);
 		}else if(obj == btnU[0]){
 			if(table.getValueAt(table.getSelectedRow(),6).toString()=="불가능"?true:false) {
 				JOptionPane.showMessageDialog(this,"대여가 불가능 합니다.","대여 실패",JOptionPane.ERROR_MESSAGE);
@@ -674,7 +1072,56 @@ public class StoreFrame extends JFrame implements ActionListener{
 			}
 		}else if(obj == btnU[2]){
 			infoFrame();
+		}else if(obj == btnInfoEidt){
+			int chk = JOptionPane.showConfirmDialog(this,"수정하시겠습니까?","확인",JOptionPane.YES_NO_OPTION);
+			if(chk==JOptionPane.YES_OPTION) {
+				StoreBean sb = new StoreBean();
+				sb.setPw(txtIPw.getText());
+				sb.setAge(Integer.parseInt( txtIAge.getText()));
+				for(int i=0;i<iRadio.length;i++) {
+					if(iRadio[i].isSelected()){
+						sb.setGender(iRadio[i].getText());
+					}
+				}
+				sb.setAddress(txtIAddress.getText());
+				sb.setEmail(txtIEmail.getText());
+				
+				int cnt = sm.updateInfoData(sb);
+				if(cnt == 0) {
+					JOptionPane.showMessageDialog(this,"수정중 오류가 발생하였습니다.","반납 실패",JOptionPane.ERROR_MESSAGE);
+				}else {
+					JOptionPane.showMessageDialog(this,"수정되었습니다.","수정 완료",JOptionPane.DEFAULT_OPTION);
+					ListInfoExit();
+				}
+			}
+		}else if(obj == btnInfoCan){
+			ListInfoExit();
 		}else if(obj == btnU[3]){
+			applayFrame();
+		}else if(obj == btnApplay){
+			int chk = JOptionPane.showConfirmDialog(this,"신청하시겠습니까?","확인",JOptionPane.YES_NO_OPTION);
+			if(txtATitle.getText().isEmpty()&&txtAGenre.getText().isEmpty()) {
+				JOptionPane.showMessageDialog(this,"제목 또는 장르를 기입해주세요.","신청 실패",JOptionPane.ERROR_MESSAGE);
+			}else {
+				if(chk==JOptionPane.YES_OPTION) {
+					StoreBean sb = new StoreBean();
+					sb.setTitle(txtATitle.getText());
+					sb.setGender(txtAGenre.getText());
+					sb.setAuthor(txtAAuthor.getText());
+					sb.setPublisher(txtAPublisher.getText());
+					sb.setContent(txtAContent.getText());
+					
+					int cnt = sm.insertApplayData(sb);
+					if(cnt == 0) {
+						JOptionPane.showMessageDialog(this,"신청중 오류가 발생하였습니다.","신청 실패",JOptionPane.ERROR_MESSAGE);
+					}else {
+						JOptionPane.showMessageDialog(this,"신청되었습니다.","신청 완료",JOptionPane.DEFAULT_OPTION);
+						ListUaExit();
+					}
+				}
+			}
+		}else if(obj == btnACencle){
+			ListUaExit();
 		}
 	}
 
@@ -782,5 +1229,44 @@ public class StoreFrame extends JFrame implements ActionListener{
 				loginBtn.doClick();
 			}
 		}
+	}
+
+	//종료 메서드
+	private void ListUExit() {
+		ListU.dispose();
+
+		userTable.removeMouseListener(new MouseHandler());
+		btnUserch.removeActionListener(this);
+		
+		btnAuEdit.removeActionListener(this);
+		btnAuDis.removeActionListener(this);
+		btnAuCencle.removeActionListener(this);
+	}
+
+	private void ListFIExit() {
+		ListFI.dispose();
+		btnCancel.removeActionListener(this);
+		btnInsert.removeActionListener(this);
+	}
+
+	private void ListInfoExit() {
+		ListInfo.dispose();
+		btnInfoEidt.removeActionListener(this);
+		btnInfoCan.removeActionListener(this);
+	}
+
+	private void ListUaExit() {
+		ListUa.dispose();
+		btnApplay.removeActionListener(this);
+		btnACencle.removeActionListener(this);
+	}
+
+	private void ListAExit() {
+		ListA.dispose();
+
+		btnApplay1.removeActionListener(this);
+		btnApplay2.removeActionListener(this);
+		btnApplay3.removeActionListener(this);
+		btnApplayCan.removeActionListener(this);
 	}
 }
