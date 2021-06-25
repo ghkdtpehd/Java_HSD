@@ -14,6 +14,7 @@ import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -31,6 +32,7 @@ import javax.swing.border.Border;
 
 
 public class StoreFrame extends JFrame implements ActionListener{
+	boolean idDuChk = false;
 	StoreMain sm = new StoreMain();
 	StoreDao dao = new StoreDao();
 	Container loginC = null;
@@ -38,6 +40,7 @@ public class StoreFrame extends JFrame implements ActionListener{
 	JPasswordField txtPw = null;
 	JButton loginBtn = new JButton();
 	JFrame ListF = null;
+	JFrame ListSignup = null;
 	JFrame ListFI = null;
 	JFrame ListU = null;
 	JFrame ListUa = null;
@@ -66,6 +69,9 @@ public class StoreFrame extends JFrame implements ActionListener{
 	String[] adminBtn = {"등록","삭제","회원목록","강제반납","신청목록"}; 
 	String[] userBtn = {"대여","반납","내정보","책신청"}; 
 	String[] BookInertBtn = {"대여","반납"}; 
+	private JButton btnSOk = new JButton("확인");
+	private JButton btnSCen =  new JButton("취소");
+	private JButton btnSIdChk =  new JButton("중복체크");
 	private JButton btnInsert = new JButton("저장");
 	private JButton btnCancel =  new JButton("취소");
 	private JButton btnAuEdit =  new JButton("수정");
@@ -91,6 +97,7 @@ public class StoreFrame extends JFrame implements ActionListener{
 	JRadioButton[] oRadio = new JRadioButton[2];
 	JRadioButton[] iRadio = new JRadioButton[2];
 	JRadioButton[] aRadio = new JRadioButton[2];
+	JRadioButton[] sRadio = new JRadioButton[2];
 	JCheckBox achk0 = new JCheckBox("미입고");
 	JCheckBox achk1 = new JCheckBox("입고");
 	JCheckBox achk2 = new JCheckBox("거부");
@@ -100,7 +107,12 @@ public class StoreFrame extends JFrame implements ActionListener{
 	JComboBox<String> sherchBCombo2 = new JComboBox<String>(serchBookStr);
 	JComboBox<String> sherchACombo1 = new JComboBox<String>(serchApplayStr);
 	JComboBox<String> sherchACombo2 = new JComboBox<String>(serchApplayStr);
+	
+	JLabel lblPSignUp = new JLabel("회원가입");
 	JLabel lblPRank_write = new JLabel("");
+	ImageIcon ReImg = new ImageIcon("src/refresh_icon.png");
+	JLabel ReImgTable = new JLabel(ReImg);
+	JLabel ReImgUserTable = new JLabel(ReImg);
 	JTextField bookSerch = new JTextField(15);
 	JTextField userSerch = new JTextField(15);
 	JTextField applaySerch = new JTextField(20);
@@ -110,13 +122,19 @@ public class StoreFrame extends JFrame implements ActionListener{
 	JTextField txtPublisher = new JTextField();
 	JTextField txtPub_date = new JTextField();
 
+	JTextField txtSName	= new JTextField(15);
+	JTextField txtSId 	= new JTextField(15);
+	JPasswordField txtSPw 	= new JPasswordField(15);
+	JTextField txtSAge	= new JTextField(15);
+	JTextField txtSAddress = new JTextField(15);
+	JTextField txtSEmail = new JTextField(30);
 	JTextField txtPName	= new JTextField(15);
 	JTextField txtPId 	= new JTextField(15);
 	JTextField txtPPw 	= new JPasswordField(15);
 	JTextField txtPAge	= new JTextField(15);
 	JTextField txtPGender = new JTextField(15);
 	JTextField txtPAddress = new JTextField(15);
-	JTextField txtPEmail = new JTextField(15);
+	JTextField txtPEmail = new JTextField(30);
 	JTextField txtPSign_up = new JTextField(15);
 	JTextField txtPRank = new JTextField(15);
 	JTextField txtIName= new JTextField(15);
@@ -124,7 +142,7 @@ public class StoreFrame extends JFrame implements ActionListener{
 	JPasswordField txtIPw= new JPasswordField(15);
 	JTextField txtIAge= new JTextField(15);
 	JTextField txtIAddress= new JTextField(15);
-	JTextField txtIEmail= new JTextField(15);
+	JTextField txtIEmail= new JTextField(30);
 	JTextField txtISign_up= new JTextField(15);
 	JTextField txtATitle= new JTextField(20);
 	JTextField txtAGenre= new JTextField(20);
@@ -153,6 +171,10 @@ public class StoreFrame extends JFrame implements ActionListener{
 		lblPw.setBounds(50,80,100,20);
 		lblPw.setFont(loginFont);
 		
+		Font signupFont = new Font("고딕",Font.PLAIN,11);
+		lblPSignUp.setBounds(50,110,100,20);
+		lblPSignUp.setFont(signupFont);
+		
 		txtId.setBounds(120,50,130,20);
 		txtId.setFont(loginFont);
 		txtId.addKeyListener(new KeyHandler());
@@ -160,9 +182,12 @@ public class StoreFrame extends JFrame implements ActionListener{
 		txtPw.setFont(loginFont);
 		txtPw.addKeyListener(new KeyHandler());
 		
+		lblPSignUp.addMouseListener(new MouseHandler());
+		
 		loginBtn.setText("로그인");
 		loginBtn.setBounds(260,50,70,50);
 		
+		loginC.add(lblPSignUp);
 		loginC.add(lblId);
 		loginC.add(lblPw);
 		loginC.add(txtId);
@@ -179,6 +204,21 @@ public class StoreFrame extends JFrame implements ActionListener{
 		setVisible(true);
 	}
 	
+	public void signupFrame() {
+		ListSignup = new JFrame("회원가입");
+		ListSignup.setLayout(null);
+		
+		singupCompse();
+
+		ListSignup.setResizable(false);
+		ListSignup.setSize(450, 300);
+		
+		Dimension frameSize = ListSignup.getSize();
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		ListSignup.setLocation((screenSize.width - frameSize.width)/2, (screenSize.height - frameSize.height)/2);
+		ListSignup.setVisible(true);
+	}
+
 	public void mainFram(int rank) {
 		//리스트
 		ListF = new JFrame("대장서점");
@@ -195,7 +235,7 @@ public class StoreFrame extends JFrame implements ActionListener{
 		ListF.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		compse(rank);
-		scrollPane.setBounds(0,40,685,350);
+		scrollPane.setBounds(0,40,685,330);
 		ListF.add(scrollPane);
 		ListF.setResizable(false);
 		ListF.setSize(700,500);
@@ -275,7 +315,7 @@ public class StoreFrame extends JFrame implements ActionListener{
 		applayScrollPane = new JScrollPane(applayTable);
 		
 		applayACompse();
-		applayScrollPane.setBounds(0,40,770,450);
+		applayScrollPane.setBounds(0,40,770,330);
 		ListA.add(applayScrollPane);
 		ListA.setResizable(false);
 		ListA.setSize(780,500);
@@ -331,6 +371,8 @@ public class StoreFrame extends JFrame implements ActionListener{
 		
 		Radio.setLayout(null);
 		pSouth.setLayout(null);
+		ReImgTable.setBounds(640, 4, 30, 30);
+		ReImgTable.addMouseListener(new MouseHandler());
 		Radio.setBounds(0, 3, 700, 35);
 		pSouth.setBounds(0, 250, 700, 400);
 		Radio.add(sherchBCombo1);
@@ -369,8 +411,70 @@ public class StoreFrame extends JFrame implements ActionListener{
 				pSouth.add(btnA[i]);
 			}
 		}
+		ListF.add(ReImgTable);
 		ListF.add(Radio);
 		ListF.add(pSouth);
+	}
+	
+	private void singupCompse() {
+		ButtonGroup userRg = new ButtonGroup();
+
+		for(int i=0;i<InfoRadioName.length;i++) {
+			sRadio[i] = new JRadioButton(InfoRadioName[i]);
+			userRg.add(sRadio[i]);
+			ListSignup.add(sRadio[i]);
+		}
+		
+		JLabel lblId = new JLabel("아이디");
+		JLabel lblPw = new JLabel("비밀번호");
+		JLabel lblName = new JLabel("이름");
+		JLabel lblAge = new JLabel("나이");
+		JLabel lblGender = new JLabel("성별");
+		JLabel lblAddress = new JLabel("거주지");
+		JLabel lblEmail = new JLabel("이메일");
+		
+		lblId.setBounds(30,30,50,30);
+		lblPw.setBounds(250,30,50,30);
+		lblName.setBounds(30,70,50,30);
+		lblAge.setBounds(230,70,50,30);
+		lblGender.setBounds(30,110,50,30);
+		lblAddress.setBounds(30,150,50,30);
+		lblEmail.setBounds(230,150,50,30);
+		
+		txtSId.setBounds(70, 32, 95, 25);
+		btnSIdChk.setBounds(168, 31, 80, 25);
+		Font btnFont = new Font("고딕",Font.PLAIN,11);
+		btnSIdChk.setFont(btnFont);
+		txtSPw.setBounds(300, 32, 95, 25);
+		txtSName.setBounds(90, 72, 110, 25);
+		txtSAge.setBounds(290, 72, 110, 25);
+		sRadio[0].setBounds(90,112,70,25);
+		sRadio[1].setBounds(170,112,70,25);
+		txtSAddress.setBounds(90, 152, 110, 25);
+		txtSEmail.setBounds(290, 152, 110, 25);
+		
+		btnSOk.setBounds(67, 200, 90, 30);
+		btnSCen.setBounds(280, 200, 90, 30);
+		btnSIdChk.addActionListener(this);
+		btnSOk.addActionListener(this);
+		btnSCen.addActionListener(this);
+		
+		ListSignup.add(lblId);
+		ListSignup.add(btnSIdChk);
+		ListSignup.add(lblPw);
+		ListSignup.add(lblName);
+		ListSignup.add(lblAge);
+		ListSignup.add(lblGender);
+		ListSignup.add(lblAddress);
+		ListSignup.add(lblEmail);
+		ListSignup.add(txtSId);
+		ListSignup.add(txtSPw);
+		ListSignup.add(txtSName);
+		ListSignup.add(txtSAge);
+		ListSignup.add(txtSAddress);
+		ListSignup.add(txtSEmail);
+		ListSignup.add(btnSOk);
+		ListSignup.add(btnSCen);
 	}
 	
 	private void userCompse() {
@@ -380,6 +484,9 @@ public class StoreFrame extends JFrame implements ActionListener{
 		
 		pRadio.setLayout(null);
 		pSouth.setLayout(null);
+		ReImgUserTable.setBounds(640, 4, 30, 30);
+		ReImgUserTable.addMouseListener(new MouseHandler());
+		pRadio.add(ReImgUserTable);
 		pRadio.setBounds(0, 0, 700, 40);
 		pSouth.setBounds(0, 250, 700, 400);
 		pRadio.add(sherchCombo1);
@@ -468,7 +575,7 @@ public class StoreFrame extends JFrame implements ActionListener{
 		btnAuDis.setBounds(310, 170, 80, 25);
 		pSouth.add(btnAuCencle);
 		btnAuCencle.setBounds(440, 170, 80, 25);
-		ListU.add(pSouth,"South");
+		ListU.add(pSouth);
 	}
 	
 	private void userInfoCompse() {
@@ -573,7 +680,7 @@ public class StoreFrame extends JFrame implements ActionListener{
 		
 		Font infoFont = new Font("Fixedsys", Font.BOLD,14);
 		
-		JLabel lblATitle = new JLabel("제목"); 
+		JLabel lblATitle = new JLabel("책제목"); 
 		lblATitle.setFont(infoFont);
 		JLabel lblAGenre = new JLabel("장르"); 
 		lblAGenre.setFont(infoFont);
@@ -749,6 +856,59 @@ public class StoreFrame extends JFrame implements ActionListener{
 			}else {
 				JOptionPane.showMessageDialog(this,"ID 또는 PW 를 확인해주세요.","로그인",JOptionPane.WARNING_MESSAGE);
 			}
+		}else if(obj == btnSIdChk){
+			boolean chk = sm.checkId(txtSId.getText());
+			idDuChk = false;
+			if(chk) {
+				JOptionPane.showMessageDialog(this,"이미 존재하는 ID입니다.","경고",JOptionPane.WARNING_MESSAGE);
+			}else {
+				JOptionPane.showMessageDialog(this,"사용가능한 ID입니다.","중복체크",JOptionPane.DEFAULT_OPTION);
+				txtSId.setEnabled(false);
+				idDuChk = true;
+			}
+		}else if(obj == btnSOk){
+			if(idDuChk) {
+				int cnt = 0;
+				String[] sqlStr = new String[7]; 
+				
+				sqlStr[0] = txtSId.getText();
+				sqlStr[1] = txtSPw.getText();
+				sqlStr[2] = txtSName.getText();
+				sqlStr[3] = txtSAge.getText();
+				if(sRadio[0].isSelected()) {
+					sqlStr[4] = "남자";
+				}else if(sRadio[1].isSelected()){
+					sqlStr[4] = "여자";
+				}else {
+					sqlStr[4] = "";
+				}
+				sqlStr[5] = txtIAddress.getText();
+				sqlStr[6] = txtIEmail.getText();
+				
+				if(sqlStr[0].isEmpty()) {
+					JOptionPane.showMessageDialog(this,"ID를 입력해주세요.\n중복체크를 해주십시오.","경고",JOptionPane.WARNING_MESSAGE);
+				}else if(sqlStr[1].isEmpty()) {
+					JOptionPane.showMessageDialog(this,"비밀번호를 입력해주세요.","경고",JOptionPane.WARNING_MESSAGE);
+				}else if(sqlStr[2].isEmpty()) {
+					JOptionPane.showMessageDialog(this,"이름을 입력해주세요.","경고",JOptionPane.WARNING_MESSAGE);
+				}else if(sqlStr[3].isEmpty()) {
+					JOptionPane.showMessageDialog(this,"나이를 입력해주세요.","경고",JOptionPane.WARNING_MESSAGE);
+				}else if(sqlStr[4].isEmpty()) {
+					JOptionPane.showMessageDialog(this,"성별을 선택해주세요.","경고",JOptionPane.WARNING_MESSAGE);
+				}else {
+					cnt = sm.InsertUser(sqlStr);
+					if(cnt == 0) {
+						JOptionPane.showMessageDialog(this,"회원가입에 실패하였습니다.","가입 실패",JOptionPane.ERROR_MESSAGE);
+					}else {
+						JOptionPane.showMessageDialog(this,"회원 가입에 성공하였습니다.\n반갑습니다."+txtSName.getText()+"님","가입 완료",JOptionPane.DEFAULT_OPTION);
+						ListSignupExit();
+					}
+				}
+			}else {
+				JOptionPane.showMessageDialog(this,"ID중복체크를 해주십시오.","경고",JOptionPane.WARNING_MESSAGE);
+			}
+		}else if(obj == btnSCen){
+			ListSignupExit();
 		}else if(obj == btnA[0]){
 			insertInit();
 		}else if(obj == btnInsert){
@@ -787,7 +947,7 @@ public class StoreFrame extends JFrame implements ActionListener{
 					JOptionPane.showMessageDialog(this,"등록에 실패하였습니다.","등록 실패",JOptionPane.ERROR_MESSAGE);
 				}else {
 					ListFIExit();
-					loadListData(sm.getAllUserList());
+					loadListData(sm.getAllBookList());
 				}
 			}
 		}else if(obj == btnCancel){
@@ -953,21 +1113,56 @@ public class StoreFrame extends JFrame implements ActionListener{
 		}else if(obj == btnA[4]){
 			applayAFrame();
 		}else if(obj == btnApplay1){
-			int chk = JOptionPane.showConfirmDialog(this,"변경 하시겠습니까?","확인",JOptionPane.YES_NO_OPTION);
-			if(chk == JOptionPane.YES_OPTION) {
-				int applayNo =Integer.parseInt(applayTable.getValueAt(applayTable.getSelectedRow(), 0).toString());
-				
-				int cnt = sm.userApplayChange(applayNo);
-				if(cnt == 0) {
-					JOptionPane.showMessageDialog(this,"변경중 오류가 발생하였습니다.","변경 실패",JOptionPane.ERROR_MESSAGE);
-				}else {
+			if(applayTable.getSelectedRow() == -1) {
+				JOptionPane.showMessageDialog(this,"변경할 행을 선택해주세요.","변경 실패",JOptionPane.ERROR_MESSAGE);
+			}else {
+				int chk = JOptionPane.showConfirmDialog(this,"변경 하시겠습니까?","확인",JOptionPane.YES_NO_OPTION);
+				if(chk == JOptionPane.YES_OPTION) {
+					int applayNo =Integer.parseInt(applayTable.getValueAt(applayTable.getSelectedRow(), 0).toString());
 					
-					//여기해야함
-					loadListData(sm.getAllBookList());
-				}
-			}	
+					int cnt = sm.userApplayChange(applayNo,0);
+					if(cnt == 0) {
+						JOptionPane.showMessageDialog(this,"변경중 오류가 발생하였습니다.","변경 실패",JOptionPane.ERROR_MESSAGE);
+					}else {
+						loadApplayListData(sm.getAllApplayList());
+						JOptionPane.showMessageDialog(this,"변경되었습니다.","변경 완료",JOptionPane.DEFAULT_OPTION);
+					}
+				}	
+			}
 		}else if(obj == btnApplay2){
+			if(applayTable.getSelectedRow() == -1) {
+				JOptionPane.showMessageDialog(this,"변경할 행을 선택해주세요.","변경 실패",JOptionPane.ERROR_MESSAGE);
+			}else {
+				int chk = JOptionPane.showConfirmDialog(this,"변경 하시겠습니까?","확인",JOptionPane.YES_NO_OPTION);
+				if(chk == JOptionPane.YES_OPTION) {
+					int applayNo =Integer.parseInt(applayTable.getValueAt(applayTable.getSelectedRow(), 0).toString());
+					
+					int cnt = sm.userApplayChange(applayNo,1);
+					if(cnt == 0) {
+						JOptionPane.showMessageDialog(this,"변경중 오류가 발생하였습니다.","변경 실패",JOptionPane.ERROR_MESSAGE);
+					}else {
+						loadApplayListData(sm.getAllApplayList());
+						JOptionPane.showMessageDialog(this,"변경되었습니다.","변경 완료",JOptionPane.DEFAULT_OPTION);
+					}
+				}	
+			}
 		}else if(obj == btnApplay3){
+			if(applayTable.getSelectedRow() == -1) {
+				JOptionPane.showMessageDialog(this,"변경할 행을 선택해주세요.","변경 실패",JOptionPane.ERROR_MESSAGE);
+			}else {
+				int chk = JOptionPane.showConfirmDialog(this,"변경 하시겠습니까?","확인",JOptionPane.YES_NO_OPTION);
+				if(chk == JOptionPane.YES_OPTION) {
+					int applayNo =Integer.parseInt(applayTable.getValueAt(applayTable.getSelectedRow(), 0).toString());
+					
+					int cnt = sm.userApplayChange(applayNo,2);
+					if(cnt == 0) {
+						JOptionPane.showMessageDialog(this,"변경중 오류가 발생하였습니다.","변경 실패",JOptionPane.ERROR_MESSAGE);
+					}else {
+						loadApplayListData(sm.getAllApplayList());
+						JOptionPane.showMessageDialog(this,"변경되었습니다.","변경 완료",JOptionPane.DEFAULT_OPTION);
+					}
+				}	
+			}
 		}else if(obj == btnApplayCan){
 			ListAExit();
 		}else if(obj == btnAserch){
@@ -1198,29 +1393,38 @@ public class StoreFrame extends JFrame implements ActionListener{
 	
 	class MouseHandler extends MouseAdapter{
 		public void mouseClicked(MouseEvent e) {
-			txtPName.setText(userTable.getValueAt(userTable.getSelectedRow(), 1).toString());
-			txtPId.setText(userTable.getValueAt(userTable.getSelectedRow(), 2).toString());
-			txtPPw.setText(userTable.getValueAt(userTable.getSelectedRow(), 3).toString());
-			txtPAge.setText(userTable.getValueAt(userTable.getSelectedRow(), 4).toString());
-				txtPGender.setText(userTable.getValueAt(userTable.getSelectedRow(), 5).toString());
-			try {
-				txtPAddress.setText(userTable.getValueAt(userTable.getSelectedRow(), 6).toString());
-			}catch(NullPointerException ne) {
-				txtPAddress.setText("");
+			Object obj = e.getSource();
+			if(obj == userTable) {
+				txtPName.setText(userTable.getValueAt(userTable.getSelectedRow(), 1).toString());
+				txtPId.setText(userTable.getValueAt(userTable.getSelectedRow(), 2).toString());
+				txtPPw.setText(userTable.getValueAt(userTable.getSelectedRow(), 3).toString());
+				txtPAge.setText(userTable.getValueAt(userTable.getSelectedRow(), 4).toString());
+					txtPGender.setText(userTable.getValueAt(userTable.getSelectedRow(), 5).toString());
+				try {
+					txtPAddress.setText(userTable.getValueAt(userTable.getSelectedRow(), 6).toString());
+				}catch(NullPointerException ne) {
+					txtPAddress.setText("");
+				}
+				try {
+					txtPEmail.setText(userTable.getValueAt(userTable.getSelectedRow(), 7).toString());
+				}catch(NullPointerException ne) {
+					txtPEmail.setText("");
+				}
+				try {
+					txtPSign_up.setText(userTable.getValueAt(userTable.getSelectedRow(), 8).toString());
+				}catch(NullPointerException ne) {
+					txtPSign_up.setText("");
+				}
+				String rank = userTable.getValueAt(userTable.getSelectedRow(), 9).toString();
+				txtPRank.setText(rank);
+				lblPRank_write.setText(rankList.get(Integer.parseInt(rank)));
+			}else if(obj == lblPSignUp) {
+				signupFrame();
+			}else if(obj == ReImgTable) {
+				loadListData(sm.getAllBookList());
+			}else if(obj == ReImgUserTable) {
+				loadUserListData(sm.getAllUserList());
 			}
-			try {
-				txtPEmail.setText(userTable.getValueAt(userTable.getSelectedRow(), 7).toString());
-			}catch(NullPointerException ne) {
-				txtPEmail.setText("");
-			}
-			try {
-				txtPSign_up.setText(userTable.getValueAt(userTable.getSelectedRow(), 8).toString());
-			}catch(NullPointerException ne) {
-				txtPSign_up.setText("");
-			}
-			String rank = userTable.getValueAt(userTable.getSelectedRow(), 9).toString();
-			txtPRank.setText(rank);
-			lblPRank_write.setText(rankList.get(Integer.parseInt(rank)));
 		}
 	}
 	class KeyHandler extends KeyAdapter{
@@ -1232,6 +1436,22 @@ public class StoreFrame extends JFrame implements ActionListener{
 	}
 
 	//종료 메서드
+	private void ListSignupExit() {
+		ListSignup.dispose();
+		btnSOk.removeMouseListener(new MouseHandler());
+		btnSCen.removeMouseListener(new MouseHandler());
+		
+		txtSId.setEnabled(true);
+		txtSId.setText("");
+		txtSPw.setText("");
+		txtSName.setText("");
+		txtSAge.setText("");
+		sRadio[0].setSelected(false);
+		sRadio[1].setSelected(false);
+		txtSAddress.setText("");
+		txtSEmail.setText("");
+	}
+	
 	private void ListUExit() {
 		ListU.dispose();
 
@@ -1256,9 +1476,16 @@ public class StoreFrame extends JFrame implements ActionListener{
 	}
 
 	private void ListUaExit() {
+		//신청초기화
 		ListUa.dispose();
 		btnApplay.removeActionListener(this);
 		btnACencle.removeActionListener(this);
+		
+		txtATitle.setText("");
+		txtAGenre.setText("");
+		txtAAuthor.setText("");
+		txtAPublisher.setText("");
+		txtAContent.setText("");
 	}
 
 	private void ListAExit() {

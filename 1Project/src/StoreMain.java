@@ -119,7 +119,15 @@ public class StoreMain extends JFrame{
 		return dao.selectApplayData(sqlStr);
 	}
 
-	public int userApplayChange(int applayNo) {
-		return dao.userApplayChange(applayNo);
+	public int userApplayChange(int applayNo,int yn) {
+		return dao.userApplayChange(applayNo,yn);
+	}
+
+	public boolean checkId(String newId) {
+		return dao.checkId(newId);
+	}
+
+	public int InsertUser(String[] sqlStr) {
+		return dao.InsertUser(sqlStr);
 	}
 }

@@ -626,7 +626,7 @@ public class StoreDao {
 		PreparedStatement ps = null;
 	int cnt = 0;
 	try {
-		String sql = "insert into book_applay values(bookapplayseq.nextval,?,?,?,?,?,sysdate,0)";
+		String sql = "insert into book_applay values(bookapplayseq.nextval,?,?,?,?,?,sysdate,0,?)";
 		ps = conn.prepareStatement(sql);
 		ps.setString(1,vo.getTitle());
 		ps.setString(2,vo.getGenre());
@@ -739,15 +739,68 @@ public class StoreDao {
 		return list;
 	}
 
-	public int userApplayChange(int applayNo) {
+	public int userApplayChange(int applayNo,int yn) {
 		PreparedStatement ps = null;
 		int cnt = 0;
 		try {
 			//저장 형식 4,1,43
-			String sql = "update book_applay set yn=0 where no=?";
+			String sql = "update book_applay set yn=? where no=?";
 			ps = conn.prepareStatement(sql);
-			ps.setInt(1, applayNo);
+			ps.setInt(1, yn);
+			ps.setInt(2, applayNo);
 			ps.executeUpdate();
+			cnt = ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				ps.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return cnt;
+	}
+
+	public boolean checkId(String newId) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int cnt = 0;
+		String sql = "select count(*) cnt from book_user where id = ?";
+		try {
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, newId);
+			rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				cnt = rs.getInt("cnt");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				ps.close();
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return cnt != 0;
+	}
+
+	public int InsertUser(String[] sqlStr) {
+		PreparedStatement ps = null;
+		int cnt = 0;
+		try {
+			String sql = "insert into book_user values(bookseq.nextval,?,?,?,?,?,?,?,sysdate,0,null)";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, sqlStr[2]);
+			ps.setString(2, sqlStr[0]);
+			ps.setString(3, sqlStr[1]);
+			ps.setInt(4, Integer.parseInt(sqlStr[3]));
+			ps.setString(5, sqlStr[4]);
+			ps.setString(6, sqlStr[5]);
+			ps.setString(7, sqlStr[6]);
 			cnt = ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
